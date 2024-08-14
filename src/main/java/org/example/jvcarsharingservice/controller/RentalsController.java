@@ -1,54 +1,48 @@
 package org.example.jvcarsharingservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.jvcarsharingservice.dto.rental.CreateRentalRequestDto;
+import org.example.jvcarsharingservice.dto.rental.RentalDto;
+import org.example.jvcarsharingservice.servece.rental.RentalService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/rentals")
 @RequiredArgsConstructor
 public class RentalsController {
+    private final RentalService rentalService;
 
     @Operation(summary = "Add a new rental")
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.CREATED)
-    public Object addRental() {
-        // Implement add rental logic
-        return null;
+    public RentalDto addRental(
+            @RequestBody @Valid CreateRentalRequestDto createRentalRequestDto) {
+        return rentalService.addRental(createRentalRequestDto);
     }
 
     @Operation(summary = "Get rentals by user ID and whether the rental is active")
     @GetMapping
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public Object getRentals(@RequestParam Long userId, @RequestParam boolean isActive) {
-        // Implement get rentals logic
-        return null;
+    public List<RentalDto> getRentals(@RequestParam Long userId, @RequestParam boolean isActive) {
+        return rentalService.getRentals(userId, isActive);
     }
 
     @Operation(summary = "Get specific rental")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Object getRental(@PathVariable Long id) {
-        // Implement get rental logic
-        return null;
+    public RentalDto getRental(@PathVariable Long id) {
+        return rentalService.getRental(id);
     }
 
     @Operation(summary = "Return a rental")
     @PostMapping("/{id}/return")
-    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.OK)
-    public Object returnRental(@PathVariable Long id) {
-        // Implement return rental logic
-        return null;
+    public RentalDto returnRental(@PathVariable Long id) {
+        return rentalService.returnRental(id);
     }
 }

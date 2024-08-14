@@ -1,63 +1,60 @@
 package org.example.jvcarsharingservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.jvcarsharingservice.dto.car.CarDetailsDto;
+import org.example.jvcarsharingservice.dto.car.CarDto;
+import org.example.jvcarsharingservice.dto.car.CarRequestDto;
+import org.example.jvcarsharingservice.servece.car.CarService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cars")
 @RequiredArgsConstructor
 public class CarsController {
+    private final CarService carService;
 
-    @Operation(summary = "Add a new car")
+    @Operation(summary = "Add a new car",
+            description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PostMapping
-    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Object addCar() {
-        // Implement add car logic
-        return null;
+    public CarDto addCar(@RequestBody @Valid CarRequestDto createCarRequestDto) {
+        return carService.addCar(createCarRequestDto);
+
     }
 
     @Operation(summary = "Get a list of cars")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Object getCars() {
-        // Implement get cars logic
-        return null;
+    public List<CarDto> getCars(Pageable pageable) {
+        return carService.getCars(pageable);
     }
 
     @Operation(summary = "Get car's detailed information")
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Object getCarDetails(@PathVariable Long id) {
-        // Implement get car details logic
-        return null;
+    public CarDetailsDto getCarDetails(@PathVariable Long id) {
+        return carService.getCarDetails(id);
     }
 
-    @Operation(summary = "Update car information")
+    @Operation(summary = "Update car information",
+            description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public Object updateCar(@PathVariable Long id) {
-        // Implement update car logic
-        return null;
+    public CarDto updateCar(@PathVariable Long id,
+                            @RequestBody @Valid CarRequestDto updateCarRequestDto) {
+        return carService.updateCar(id, updateCarRequestDto);
     }
 
     @Operation(summary = "Delete car")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Object deleteCar(@PathVariable Long id) {
-        // Implement delete car logic
-        return null;
+    public void deleteCar(@PathVariable Long id) {
+        carService.delete(id);
     }
 }

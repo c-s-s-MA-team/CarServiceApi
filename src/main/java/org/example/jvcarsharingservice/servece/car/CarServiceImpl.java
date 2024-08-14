@@ -2,6 +2,7 @@ package org.example.jvcarsharingservice.servece.car;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.car.CarDetailsDto;
 import org.example.jvcarsharingservice.dto.car.CarDto;
@@ -12,8 +13,6 @@ import org.example.jvcarsharingservice.model.enums.Type;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +64,7 @@ public class CarServiceImpl implements CarService {
             case "SEDAN" -> car.setType(Type.SEDAN);
             case "SUV" -> car.setType(Type.SUV);
             case "HATCHBACK" -> car.setType(Type.HATCHBACK);
-            case "UNIVERSAL" -> car.setType(Type.UNIVERSAL);
+            default -> car.setType(Type.UNIVERSAL);
         }
     }
 }

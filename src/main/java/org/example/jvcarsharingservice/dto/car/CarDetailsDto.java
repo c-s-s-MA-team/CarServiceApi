@@ -1,8 +1,7 @@
 package org.example.jvcarsharingservice.dto.car;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
+import lombok.Data;
 
 @Data
 public class CarDetailsDto {

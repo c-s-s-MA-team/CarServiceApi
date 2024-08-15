@@ -32,7 +32,6 @@ public class CarsController {
     @ResponseStatus(HttpStatus.CREATED)
     public CarDto addCar(@RequestBody @Valid CarRequestDto createCarRequestDto) {
         return carService.addCar(createCarRequestDto);
-
     }
 
     @Operation(summary = "Get a list of cars")

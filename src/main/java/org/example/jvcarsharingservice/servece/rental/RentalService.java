@@ -12,5 +12,5 @@ public interface RentalService {
 
     RentalDto getRental(Long id);
 
-    RentalDto returnRental(Long id);
+    void returnRental(Long id);
 }

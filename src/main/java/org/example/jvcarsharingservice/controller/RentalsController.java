@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +34,7 @@ public class RentalsController {
     @Operation(summary = "Get rentals by user ID and whether the rental is active")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RentalDto> getRentals(@RequestParam Long userId, @RequestParam boolean isActive) {
-        RentalSearchParameters parameters = null;
+    public List<RentalDto> getRentals(RentalSearchParameters parameters) {
         return rentalService.getRentals(parameters);
     }
 
@@ -50,7 +48,7 @@ public class RentalsController {
     @Operation(summary = "Return a rental")
     @PostMapping("/{id}/return")
     @ResponseStatus(HttpStatus.OK)
-    public RentalDto returnRental(@PathVariable Long id) {
-        return rentalService.returnRental(id);
+    public void returnRental(@PathVariable Long id) {
+        rentalService.returnRental(id);
     }
 }

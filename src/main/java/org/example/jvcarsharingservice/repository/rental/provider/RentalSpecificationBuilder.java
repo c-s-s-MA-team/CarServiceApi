@@ -22,12 +22,6 @@ public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> 
                     specificationProviderManager.getSpecificationProvider("userId")
                             .getSpecification(searchParameters.userId()));
         }
-        if (searchParameters.returnDate() != null
-                && searchParameters.returnDate().length > 0) {
-            spec = spec.and(
-                    specificationProviderManager.getSpecificationProvider("returnDate")
-                            .getSpecification(searchParameters.returnDate()));
-        }
         return spec;
     }
 }

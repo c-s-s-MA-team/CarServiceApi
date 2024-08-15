@@ -63,25 +63,21 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public void returnRental(Long id) {
         updateCarInventoryAfterReturnRent(id);
-        setActualReturnDate(id);
         rentalRepository.deleteById(id);
-    }
-
-    private void setActualReturnDate(Long id) {
-        Rental rental = rentalRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Rental with id " + id + " not found")
-        );
-        rental.setActualReturnDate(LocalDate.now());
     }
 
     private void updateCarInventoryAfterReturnRent(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Rental with id " + id + " not found")
         );
+        rental.setActualReturnDate(LocalDate.now());
+        rental.setId(id);
         Long carId = rental.getCarId();
         Car car = carRepository.findById(carId).orElseThrow(
                 () -> new EntityNotFoundException("Car with id " + carId + " not found")
         );
         car.setInventory(car.getInventory() + 1);
+
+        rentalRepository.save(rental);
     }
 }

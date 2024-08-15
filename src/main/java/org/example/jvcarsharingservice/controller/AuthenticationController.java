@@ -5,7 +5,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.dto.user.login.LoginRequestDto;
+import org.example.jvcarsharingservice.dto.user.login.LoginResponseDto;
 import org.example.jvcarsharingservice.dto.user.registration.RegisterRequestDto;
+import org.example.jvcarsharingservice.security.jwt.AuthService;
 import org.example.jvcarsharingservice.servece.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final UserService userService;
+    private final AuthService authService;
 
     @Operation(summary = "Register a new user")
     @PostMapping("/register")
@@ -31,9 +34,9 @@ public class AuthenticationController {
     @Operation(summary = "User login to obtain JWT tokens")
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto login(
+    public LoginResponseDto login(
             @RequestBody @Valid LoginRequestDto requestDto) {
-        return userService.login(requestDto);
+        return authService.authenticate(requestDto);
     }
 }
 

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.dto.user.login.LoginRequestDto;
+import org.example.jvcarsharingservice.dto.user.login.LoginResponseDto;
 import org.example.jvcarsharingservice.dto.user.registration.RegisterRequestDto;
 import org.example.jvcarsharingservice.exception.RegistrationException;
 import org.example.jvcarsharingservice.mapper.UserMapper;
@@ -41,11 +42,6 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(requestDto.getFirstName());
         user.setLastName(requestDto.getLastName());
         return user;
-    }
-
-    @Override
-    public UserDto login(LoginRequestDto requestDto) {
-        return new UserDto();
     }
 
     @Override

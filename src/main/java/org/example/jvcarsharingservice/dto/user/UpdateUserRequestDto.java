@@ -6,8 +6,6 @@ public record UpdateUserRequestDto(
         @NotNull
         String firstName,
         @NotNull
-        String lastName,
-        @NotNull
-        String password
+        String lastName
 ) {
 }

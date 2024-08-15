@@ -5,8 +5,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
+import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.servece.user.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,18 +37,18 @@ public class UsersController {
     @Operation(summary = "Get my profile info")
     @GetMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getMyProfile() {
-        String email = null;
-        return userService.getMyProfile(email);
+    public UserDto getMyProfile(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return userService.getMyProfile(user);
     }
 
     @Operation(summary = "Update my profile info")
     @PutMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateMyProfile(
+    public UserDto updateMyProfile(Authentication authentication,
             @RequestBody @Valid UpdateUserRequestDto request) {
-        String email = null;
-        return userService.updateMyProfile(email, request);
+        User user = (User) authentication.getPrincipal();
+        return userService.updateMyProfile(user, request);
     }
 }
 

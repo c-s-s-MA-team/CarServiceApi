@@ -11,13 +11,13 @@ databaseChangeLog:
                   value: admin@admin.com
               - column:
                   name: first_name
-                  value: name
+                  value: password
               - column:
                   name: last_name
-                  value: name
+                  value: password
               - column:
                   name: password
-                  value: password
+                  value: $2a$10$OS/X7/9GMWlsZICdLxTAN.ORs0lhnpWEO4M/53GPKp/PdkqV4QC.2
               - column:
                   name: role
                   value: MANAGER

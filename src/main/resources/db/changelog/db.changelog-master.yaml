@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changes/create-rental-table.yaml
   - include:
       file: db/changelog/changes/create-payment-table.yaml
+  - include:
+      file: db/changelog/changes/01-create-user.yaml

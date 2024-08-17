@@ -5,8 +5,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentDto;
+import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.servece.payment.PaymentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,26 +34,28 @@ public class PaymentsController {
     @Operation(summary = "Create payment session")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PaymentDto createPaymentSession(
-            @RequestBody @Valid CreatePaymentRequestDto requestDto) {
-        //return paymentService.createPayment();
-        return null;
+    public PaymentDto createPaymentSession(@RequestBody @Valid CreatePaymentRequestDto requestDto,
+                                           Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return paymentService.createPayment(user, requestDto);
     }
 
     @Operation(summary = "Check successful Stripe payments")
     @GetMapping("/success/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto checkPaymentSuccess(@PathVariable String sessionId) {
-        //return paymentService.checkPaymentSuccess(sessionId);
-        return null;
+    public PaymentDto checkPaymentSuccess(@PathVariable String sessionId,
+                                          Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return paymentService.checkPaymentSuccess(user, sessionId);
     }
 
     @Operation(summary = "Return payment paused message")
     @GetMapping("/cancel/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto paymentPaused(@PathVariable String sessionId) {
-        //return paymentService.pausePayment(sessionId);
-        return null;
+    public PaymentDto paymentPaused(@PathVariable String sessionId,
+                                    Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return paymentService.pausePayment(user, sessionId);
     }
 }
 

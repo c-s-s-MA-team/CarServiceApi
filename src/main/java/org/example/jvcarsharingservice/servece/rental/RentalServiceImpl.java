@@ -45,10 +45,12 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public List<RentalDto> getRentals(RentalSearchParameters rentalSearchParameters) {
         Specification<Rental> build = rentalSpecificationBuilder.build(rentalSearchParameters);
-        return rentalRepository.findAll(build)
+        List<Rental> all = rentalRepository.findAll(build);
+        List<RentalDto> list = all
                 .stream()
                 .map(rentalMapper::toDto)
                 .toList();
+        return list;
     }
 
     @Override

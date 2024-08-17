@@ -1,5 +1,8 @@
 package org.example.jvcarsharingservice.model.enums;
 
 public enum Status {
-    PENDING, PAID
+    HOLD_ON,
+    PENDING,
+    AUTHORIZED,
+    COMPLETED
 }

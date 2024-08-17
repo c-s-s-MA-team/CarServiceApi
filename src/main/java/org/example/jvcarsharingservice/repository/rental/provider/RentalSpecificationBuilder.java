@@ -8,12 +8,14 @@ import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Component
 @RequiredArgsConstructor
 public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> {
     private final SpecificationProviderManager<Rental> specificationProviderManager;
 
-    @Override
+    @Override//można spróbować usunąć Menagera i całą logikę tu zaimplementować -> tak jak w tym wariancie mniej zalecanym na kursie
     public Specification<Rental> build(RentalSearchParameters searchParameters) {
         Specification<Rental> spec = Specification.where(null);
         if (searchParameters.userId() != null
@@ -21,6 +23,11 @@ public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> 
             spec = spec.and(
                     specificationProviderManager.getSpecificationProvider("userId")
                             .getSpecification(searchParameters.userId()));
+        }
+        if (searchParameters.isActive() != null) {
+            spec = spec.and(
+                    specificationProviderManager.getSpecificationProvider("isActive")
+                            .getSpecification(searchParameters.isActive()));
         }
         return spec;
     }

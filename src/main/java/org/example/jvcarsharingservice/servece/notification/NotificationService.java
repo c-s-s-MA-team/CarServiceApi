@@ -1,6 +1,6 @@
 package org.example.jvcarsharingservice.servece.notification;
 
-import org.example.jvcarsharingservice.telegram_bots.NotificationBot;
+import org.example.jvcarsharingservice.telegram.NotificationBot;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

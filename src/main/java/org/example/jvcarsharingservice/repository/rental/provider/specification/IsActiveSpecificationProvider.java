@@ -1,10 +1,10 @@
 package org.example.jvcarsharingservice.repository.rental.provider.specification;
 
+import java.time.LocalDate;
 import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.repository.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import java.time.LocalDate;
 
 @Component
 public class IsActiveSpecificationProvider implements SpecificationProvider<Rental> {
@@ -26,7 +26,7 @@ public class IsActiveSpecificationProvider implements SpecificationProvider<Rent
     @Override
     public Specification<Rental> getSpecification(Boolean params) {
         return (root, query, criteriaBuilder) -> {
-            if(params == null) {
+            if (params == null) {
                 return null;
             }
             if (params) {

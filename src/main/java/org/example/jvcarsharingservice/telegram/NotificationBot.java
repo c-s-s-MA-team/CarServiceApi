@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.telegram_bots;
+package org.example.jvcarsharingservice.telegram;
 
 import org.example.jvcarsharingservice.exception.BotNotificationException;
 import org.springframework.beans.factory.annotation.Value;

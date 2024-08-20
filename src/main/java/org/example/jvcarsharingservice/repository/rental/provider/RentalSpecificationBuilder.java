@@ -8,14 +8,13 @@ import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Component
 @RequiredArgsConstructor
 public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> {
     private final SpecificationProviderManager<Rental> specificationProviderManager;
 
-    @Override//można spróbować usunąć Menagera i całą logikę tu zaimplementować -> tak jak w tym wariancie mniej zalecanym na kursie
+    @Override//można spróbować usunąć Menagera i całą logikę tu zaimplementować
+    // -> tak jak w tym wariancie mniej zalecanym na kursie
     public Specification<Rental> build(RentalSearchParameters searchParameters) {
         Specification<Rental> spec = Specification.where(null);
         if (searchParameters.userId() != null

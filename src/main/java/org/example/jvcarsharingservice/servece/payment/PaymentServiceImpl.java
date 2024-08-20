@@ -4,6 +4,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentDto;
@@ -21,8 +22,6 @@ import org.example.jvcarsharingservice.repository.rental.RentalRepository;
 import org.example.jvcarsharingservice.servece.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
@@ -69,7 +68,8 @@ public class PaymentServiceImpl implements PaymentService {
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
                                 .setCurrency("usd")
                                 .setUnitAmount(total.multiply(BigDecimal.valueOf(100)).longValue())
-                                .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                .setProductData(
+                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                         .setName("Peyment for: " + rental.getId())
                                         .build())
                                 .build())
@@ -92,7 +92,11 @@ public class PaymentServiceImpl implements PaymentService {
         return total;
     }
 
-    private Payment getPayment(Status pending, PaymentType payment, Rental rental, BigDecimal total, Session session) {
+    private Payment getPayment(Status pending,
+                               PaymentType payment,
+                               Rental rental,
+                               BigDecimal total,
+                               Session session) {
         Payment paymentEntity = new Payment();
         paymentEntity.setStatus(pending);
         paymentEntity.setType(payment);

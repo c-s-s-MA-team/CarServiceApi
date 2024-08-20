@@ -7,7 +7,7 @@ import org.example.jvcarsharingservice.model.classes.User;
 public interface PaymentService {
     PaymentDto createPayment(User user, CreatePaymentRequestDto requestDto);
 
-    PaymentDto checkPaymentSuccess(User user, String sessionId);
+    String checkPaymentSuccess(String sessionId);
 
-    PaymentDto pausePayment(User user, String sessionId);
+    String pausePayment(String sessionId);
 }

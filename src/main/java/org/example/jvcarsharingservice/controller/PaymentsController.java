@@ -43,19 +43,15 @@ public class PaymentsController {
     @Operation(summary = "Check successful Stripe payments")
     @GetMapping("/success/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto checkPaymentSuccess(@PathVariable String sessionId,
-                                          Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return paymentService.checkPaymentSuccess(user, sessionId);
+    public String checkPaymentSuccess(@PathVariable String sessionId) {
+        return paymentService.checkPaymentSuccess(sessionId);
     }
 
     @Operation(summary = "Return payment paused message")
     @GetMapping("/cancel/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto paymentPaused(@PathVariable String sessionId,
-                                    Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return paymentService.pausePayment(user, sessionId);
+    public String paymentPaused(@PathVariable String sessionId) {
+        return paymentService.pausePayment(sessionId);
     }
 }
 

@@ -13,6 +13,7 @@ import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
 import org.example.jvcarsharingservice.repository.rental.provider.RentalSpecificationBuilder;
+import org.example.jvcarsharingservice.servece.notification.NotificationService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,16 @@ public class RentalServiceImpl implements RentalService {
     private final RentalMapper rentalMapper;
     private final CarRepository carRepository;
     private final RentalSpecificationBuilder rentalSpecificationBuilder;
+    private final NotificationService notificationService;
     
     @Override
     public RentalDto addRental(
             CreateRentalRequestDto createRentalRequestDto) {
         updateCarInventoryAfterRent(createRentalRequestDto);
+        notificationService.notifyNewRentalsCreated(
+                "User with id " + createRentalRequestDto.userId()
+                + " rent a car with id " + createRentalRequestDto.carId()
+        );
         return rentalMapper.toDto(
                 rentalRepository.save(
                         rentalMapper.toEntity(createRentalRequestDto))
@@ -73,6 +79,12 @@ public class RentalServiceImpl implements RentalService {
                 () -> new EntityNotFoundException("Rental with id " + id + " not found")
         );
         rental.setActualReturnDate(LocalDate.now());
+        if (rental.getReturnDate().isAfter(LocalDate.now())) {
+            notificationService.notifyOverdueRentals(
+                    "user with id " + rental.getUserId()
+                    + " returns the car with a delay, car id " + rental.getCarId()
+            );
+        }
         rental.setId(id);
         Long carId = rental.getCarId();
         Car car = carRepository.findById(carId).orElseThrow(

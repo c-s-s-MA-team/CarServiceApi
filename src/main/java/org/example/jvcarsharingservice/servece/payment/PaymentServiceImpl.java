@@ -18,6 +18,7 @@ import org.example.jvcarsharingservice.model.enums.Status;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.payment.PaymentRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
+import org.example.jvcarsharingservice.servece.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final CarRepository carRepository;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
+    private final NotificationService notificationService;
 
     @Override
     public PaymentDto createPayment(User user, CreatePaymentRequestDto requestDto) {
@@ -113,7 +115,9 @@ public class PaymentServiceImpl implements PaymentService {
                 );
                 payment.setStatus(Status.PAID);
                 paymentRepository.save(payment);
-                return "Payment successful! Thank you for your payment.";
+                String message = "Payment successful! Thank you for your payment.";
+                notificationService.notifySuccessfulPayments(message);
+                return message;
             } else {
                 return "Payment is not completed yet. Please try again later.";
             }

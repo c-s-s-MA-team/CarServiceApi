@@ -10,6 +10,7 @@ import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.servece.payment.PaymentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentsController {
     private final PaymentService paymentService;
 
-    @Operation(summary = "Get payments by user ID")
+    @Operation(summary = "Get payments by user ID - MANAGER only ")
     @GetMapping
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public List<PaymentDto> getPayments(PaymentSearchParameters searchParameters) {
         return paymentService.getPayments(searchParameters);
@@ -34,6 +36,7 @@ public class PaymentsController {
 
     @Operation(summary = "Create payment session")
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentDto createPaymentSession(@RequestBody @Valid CreatePaymentRequestDto requestDto,
                                            Authentication authentication) {
@@ -43,6 +46,7 @@ public class PaymentsController {
 
     @Operation(summary = "Check successful Stripe payments")
     @GetMapping("/success/{sessionId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public String checkPaymentSuccess(@PathVariable String sessionId) {
         return paymentService.checkPaymentSuccess(sessionId);
@@ -50,6 +54,7 @@ public class PaymentsController {
 
     @Operation(summary = "Return payment paused message")
     @GetMapping("/cancel/{sessionId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public String paymentPaused(@PathVariable String sessionId) {
         return paymentService.pausePayment(sessionId);

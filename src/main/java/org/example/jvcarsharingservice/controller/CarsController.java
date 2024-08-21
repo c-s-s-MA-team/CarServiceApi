@@ -10,6 +10,7 @@ import org.example.jvcarsharingservice.dto.car.CarRequestDto;
 import org.example.jvcarsharingservice.servece.car.CarService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarsController {
     private final CarService carService;
 
-    @Operation(summary = "Add a new car",
+    @Operation(summary = "Add a new car - MANAGER only ",
             description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PostMapping
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
     public CarDto addCar(@RequestBody @Valid CarRequestDto createCarRequestDto) {
         return carService.addCar(createCarRequestDto);
@@ -36,6 +38,7 @@ public class CarsController {
 
     @Operation(summary = "Get a list of cars")
     @GetMapping
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public List<CarDto> getCars(Pageable pageable) {
         return carService.getCars(pageable);
@@ -43,22 +46,25 @@ public class CarsController {
 
     @Operation(summary = "Get car's detailed information")
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public CarDetailsDto getCarDetails(@PathVariable Long id) {
         return carService.getCarDetails(id);
     }
 
-    @Operation(summary = "Update car information",
+    @Operation(summary = "Update car information - MANAGER only ",
             description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public CarDto updateCar(@PathVariable Long id,
                             @RequestBody @Valid CarRequestDto updateCarRequestDto) {
         return carService.updateCar(id, updateCarRequestDto);
     }
 
-    @Operation(summary = "Delete car")
+    @Operation(summary = "Delete car - MANAGER only ")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long id) {
         carService.delete(id);

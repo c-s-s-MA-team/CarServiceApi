@@ -10,6 +10,7 @@ import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.mapper.RentalMapper;
 import org.example.jvcarsharingservice.model.classes.Car;
 import org.example.jvcarsharingservice.model.classes.Rental;
+import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
 import org.example.jvcarsharingservice.repository.rental.provider.RentalSpecificationBuilder;
@@ -28,17 +29,18 @@ public class RentalServiceImpl implements RentalService {
     
     @Override
     public RentalDto addRental(
-            CreateRentalRequestDto createRentalRequestDto) {
+            User user, CreateRentalRequestDto createRentalRequestDto) {
         updateCarInventoryAfterRent(createRentalRequestDto);
         notificationService.notifyNewRentalsCreated(
-                "User with id " + createRentalRequestDto.userId()
+                "User with id " + user.getId()
                 + " rent a car with id " + createRentalRequestDto.carId()
                 + " from " + createRentalRequestDto.rentalDate()
                 + " to " + createRentalRequestDto.returnDate()
         );
+        Rental entity = rentalMapper.toEntity(createRentalRequestDto);
+        entity.setUserId(user.getId());
         return rentalMapper.toDto(
-                rentalRepository.save(
-                        rentalMapper.toEntity(createRentalRequestDto))
+                rentalRepository.save(entity)
         );
     }
 
@@ -68,21 +70,19 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
-    public void returnRental(Long id) {
-        updateCarInventoryAfterReturnRent(id);
+    public void returnRental(User user, Long id) {
+        updateCarInventoryAfterReturnRent(user, id);
     }
 
-    private void updateCarInventoryAfterReturnRent(Long id) {
+    private void updateCarInventoryAfterReturnRent(User user, Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Rental with id " + id + " not found")
         );
+        checkIfThisRentIsForCorrectUser(user, rental);
+
         rental.setActualReturnDate(LocalDate.now());
-        if (rental.getReturnDate().isAfter(LocalDate.now())) {
-            notificationService.notifyOverdueRentals(
-                    "user with id " + rental.getUserId()
-                    + " returns the car with a delay, car id " + rental.getCarId()
-            );
-        }
+        notificationForOverdueRent(rental);
+
         rental.setId(id);
         Long carId = rental.getCarId();
         Car car = carRepository.findById(carId).orElseThrow(
@@ -91,5 +91,23 @@ public class RentalServiceImpl implements RentalService {
         car.setInventory(car.getInventory() + 1);
 
         rentalRepository.save(rental);
+    }
+
+    private void notificationForOverdueRent(Rental rental) {
+        if (rental.getReturnDate().isAfter(LocalDate.now())) {
+            notificationService.notifyOverdueRentals(
+                    "user with id " + rental.getUserId()
+                    + " returns the car with a delay, car id " + rental.getCarId()
+            );
+        }
+    }
+
+    private static void checkIfThisRentIsForCorrectUser(User user, Rental rental) {
+        if (user.getId() != rental.getUserId()) {
+            throw new EntityNotFoundException(
+                    "User with id " + user.getId()
+                    + " does not belong to this Rental"
+            );
+        }
     }
 }

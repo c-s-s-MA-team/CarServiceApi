@@ -12,7 +12,6 @@ public class NotificationService {
     @Value("${telegram.admin.chat.id}")
     private String adminChatId;
 
-
     public void notifyNewRentalsCreated(String message) {
         String info = """
                 new rentals created: 

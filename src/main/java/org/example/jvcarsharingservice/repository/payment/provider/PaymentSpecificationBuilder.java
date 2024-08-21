@@ -1,5 +1,6 @@
 package org.example.jvcarsharingservice.repository.payment.provider;
 
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
@@ -8,8 +9,6 @@ import org.example.jvcarsharingservice.repository.SpecificationBuilder;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ public class PaymentSpecificationBuilder implements SpecificationBuilder<Payment
     public Specification<Payment> build(PaymentSearchParameters searchParameters) {
         Specification<Payment> spec = Specification.where(null);
         if (searchParameters.usersId() != null
-            && searchParameters.usersId().length > 0) {
+                    && searchParameters.usersId().length > 0) {
             Long[] usersIds = Arrays.stream(searchParameters.usersId())
                     .map(s -> s.replaceAll("[\\[\\]\"]", ""))
                     .map(Long::valueOf)

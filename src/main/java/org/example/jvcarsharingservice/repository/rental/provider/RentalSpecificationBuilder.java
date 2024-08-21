@@ -1,5 +1,6 @@
 package org.example.jvcarsharingservice.repository.rental.provider;
 
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
@@ -8,8 +9,6 @@ import org.example.jvcarsharingservice.repository.SpecificationBuilder;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor

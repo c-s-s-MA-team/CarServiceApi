@@ -1,13 +1,12 @@
 package org.example.jvcarsharingservice.repository.payment.provider;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.exception.NoProviderException;
 import org.example.jvcarsharingservice.model.classes.Payment;
 import org.example.jvcarsharingservice.repository.SpecificationProvider;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

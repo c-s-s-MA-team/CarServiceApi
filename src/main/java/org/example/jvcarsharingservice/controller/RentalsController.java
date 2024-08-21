@@ -28,7 +28,7 @@ public class RentalsController {
 
     @Operation(summary = "Add a new rental")
     @PostMapping
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     public RentalDto addRental(
             @RequestBody @Valid CreateRentalRequestDto createRentalRequestDto,
@@ -39,7 +39,7 @@ public class RentalsController {
 
     @Operation(summary = "Get rentals by user ID and whether the rental is active - MANAGER only ")
     @GetMapping
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public List<RentalDto> getRentals(RentalSearchParameters parameters) {
         return rentalService.getRentals(parameters);
@@ -47,7 +47,7 @@ public class RentalsController {
 
     @Operation(summary = "Get specific rental - MANAGER only ")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('MANAGER'')")
+    @PreAuthorize("hasAnyAuthority('MANAGER'')")
     @ResponseStatus(HttpStatus.OK)
     public RentalDto getRental(@PathVariable Long id) {
         return rentalService.getRental(id);
@@ -55,7 +55,7 @@ public class RentalsController {
 
     @Operation(summary = "Return a rental")
     @PostMapping("/{id}/return")
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public void returnRental(@PathVariable Long id,
                              Authentication authentication) {

@@ -30,7 +30,7 @@ public class UsersController {
                     If user have Role = Customer then Customer => Manager, 
                     """)
     @PutMapping("/{id}/role")
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public UserDto updateUserRole(@PathVariable Long id) {
         return userService.updateRole(id);

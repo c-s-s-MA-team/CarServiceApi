@@ -30,7 +30,7 @@ public class CarsController {
     @Operation(summary = "Add a new car - MANAGER only ",
             description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PostMapping
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
     public CarDto addCar(@RequestBody @Valid CarRequestDto createCarRequestDto) {
         return carService.addCar(createCarRequestDto);
@@ -38,7 +38,7 @@ public class CarsController {
 
     @Operation(summary = "Get a list of cars")
     @GetMapping
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public List<CarDto> getCars(Pageable pageable) {
         return carService.getCars(pageable);
@@ -46,7 +46,7 @@ public class CarsController {
 
     @Operation(summary = "Get car's detailed information")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public CarDetailsDto getCarDetails(@PathVariable Long id) {
         return carService.getCarDetails(id);
@@ -55,7 +55,7 @@ public class CarsController {
     @Operation(summary = "Update car information - MANAGER only ",
             description = "types = SEDAN, SUV, HATCHBACK, UNIVERSAL")
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public CarDto updateCar(@PathVariable Long id,
                             @RequestBody @Valid CarRequestDto updateCarRequestDto) {
@@ -64,7 +64,7 @@ public class CarsController {
 
     @Operation(summary = "Delete car - MANAGER only ")
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCar(@PathVariable Long id) {
         carService.delete(id);

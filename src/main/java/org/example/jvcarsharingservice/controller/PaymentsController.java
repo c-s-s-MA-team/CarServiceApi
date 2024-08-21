@@ -28,7 +28,7 @@ public class PaymentsController {
 
     @Operation(summary = "Get payments by user ID - MANAGER only ")
     @GetMapping
-    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public List<PaymentDto> getPayments(PaymentSearchParameters searchParameters) {
         return paymentService.getPayments(searchParameters);
@@ -36,7 +36,7 @@ public class PaymentsController {
 
     @Operation(summary = "Create payment session")
     @PostMapping
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentDto createPaymentSession(@RequestBody @Valid CreatePaymentRequestDto requestDto,
                                            Authentication authentication) {
@@ -46,7 +46,7 @@ public class PaymentsController {
 
     @Operation(summary = "Check successful Stripe payments")
     @GetMapping("/success/{sessionId}")
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public String checkPaymentSuccess(@PathVariable String sessionId) {
         return paymentService.checkPaymentSuccess(sessionId);
@@ -54,7 +54,7 @@ public class PaymentsController {
 
     @Operation(summary = "Return payment paused message")
     @GetMapping("/cancel/{sessionId}")
-    @PreAuthorize("hasAnyRole('MANAGER', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'CUSTOMER')")
     @ResponseStatus(HttpStatus.OK)
     public String paymentPaused(@PathVariable String sessionId) {
         return paymentService.pausePayment(sessionId);

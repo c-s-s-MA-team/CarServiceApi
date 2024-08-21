@@ -33,6 +33,8 @@ public class RentalServiceImpl implements RentalService {
         notificationService.notifyNewRentalsCreated(
                 "User with id " + createRentalRequestDto.userId()
                 + " rent a car with id " + createRentalRequestDto.carId()
+                + " from " + createRentalRequestDto.rentalDate()
+                + " to " + createRentalRequestDto.returnDate()
         );
         return rentalMapper.toDto(
                 rentalRepository.save(
@@ -51,12 +53,9 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public List<RentalDto> getRentals(RentalSearchParameters rentalSearchParameters) {
         Specification<Rental> build = rentalSpecificationBuilder.build(rentalSearchParameters);
-        List<Rental> all = rentalRepository.findAll(build);
-        List<RentalDto> list = all
-                .stream()
+        return rentalRepository.findAll(build).stream()
                 .map(rentalMapper::toDto)
                 .toList();
-        return list;
     }
 
     @Override
@@ -71,7 +70,6 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public void returnRental(Long id) {
         updateCarInventoryAfterReturnRent(id);
-        rentalRepository.deleteById(id);
     }
 
     private void updateCarInventoryAfterReturnRent(Long id) {

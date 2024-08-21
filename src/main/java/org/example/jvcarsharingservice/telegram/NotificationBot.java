@@ -10,14 +10,10 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 public class NotificationBot extends TelegramLongPollingBot {
-    private final String botToken;
-    private final String botUsername;
-
-    public NotificationBot(@Value("${telegram.bot.token}") String botToken,
-                           @Value("${telegram.bot.username}") String botUsername) {
-        this.botToken = botToken;
-        this.botUsername = botUsername;
-    }
+    @Value("${telegram.bot.token}")
+    private String botToken;
+    @Value("${telegram.bot.username}")
+    private String botUsername;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -26,6 +22,11 @@ public class NotificationBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         return botUsername;
+    }
+
+    @Override
+    public String getBotToken() {
+        return botToken;
     }
 
     public void sendMessage(String chatId, String message) {

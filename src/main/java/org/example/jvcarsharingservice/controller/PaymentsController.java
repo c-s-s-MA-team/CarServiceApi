@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentDto;
+import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.servece.payment.PaymentService;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/payments")
 @RequiredArgsConstructor
@@ -24,11 +27,10 @@ public class PaymentsController {
     private final PaymentService paymentService;
 
     @Operation(summary = "Get payments by user ID")
-    @GetMapping("/?user_id={userId}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PaymentDto getPayments(@PathVariable Long userId) {
-        //return paymentService.getPayments(userId);
-        return null;
+    public List<PaymentDto> getPayments(PaymentSearchParameters searchParameters) {
+        return paymentService.getPayments(searchParameters);
     }
 
     @Operation(summary = "Create payment session")

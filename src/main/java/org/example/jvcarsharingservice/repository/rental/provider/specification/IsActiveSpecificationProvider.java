@@ -31,7 +31,7 @@ public class IsActiveSpecificationProvider implements SpecificationProvider<Rent
             }
             if (params) {
                 return criteriaBuilder.and(
-                        criteriaBuilder.isNotNull(
+                        criteriaBuilder.isNull(
                                 root.get("actualReturnDate")
                         ),
                         criteriaBuilder.greaterThanOrEqualTo(
@@ -43,7 +43,8 @@ public class IsActiveSpecificationProvider implements SpecificationProvider<Rent
                         criteriaBuilder.isNotNull(
                                 root.get("actualReturnDate")
                         ),
-                        criteriaBuilder.lessThan(root.get("returnDate"),
+                        criteriaBuilder.lessThan(
+                                root.get("returnDate"),
                                 LocalDate.now()
                         ));
             }

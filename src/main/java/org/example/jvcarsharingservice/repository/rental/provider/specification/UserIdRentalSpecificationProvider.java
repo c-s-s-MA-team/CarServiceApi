@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserIdSpecificationProvider implements SpecificationProvider<Rental> {
+public class UserIdRentalSpecificationProvider implements SpecificationProvider<Rental> {
 
     @Override
     public String getKey() {
@@ -22,7 +22,7 @@ public class UserIdSpecificationProvider implements SpecificationProvider<Rental
     public Specification<Rental> getSpecification(Long[] params) {
         return (root, query, criteriaBuilder) -> root
                 .get("userId")
-                .in(Arrays.asList(params));
+                .in(Arrays.stream(params).toArray());
     }
 
     @Override

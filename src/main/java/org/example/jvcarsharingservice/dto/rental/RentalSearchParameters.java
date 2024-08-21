@@ -1,7 +1,7 @@
 package org.example.jvcarsharingservice.dto.rental;
 
 public record RentalSearchParameters(
-        Long[] userId,
+        String[] userId,
         Boolean isActive
 ) {
 }

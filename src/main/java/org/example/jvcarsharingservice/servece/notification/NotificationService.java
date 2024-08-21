@@ -1,19 +1,17 @@
 package org.example.jvcarsharingservice.servece.notification;
 
+import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.telegram.NotificationBot;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
     private final NotificationBot notificationBot;
-    private final String adminChatId;
+    @Value("${telegram.admin.chat.id}")
+    private String adminChatId;
 
-    public NotificationService(NotificationBot notificationBot,
-                               @Value("${telegram.admin.chat.id}") String adminChatId) {
-        this.notificationBot = notificationBot;
-        this.adminChatId = adminChatId;
-    }
 
     public void notifyNewRentalsCreated(String message) {
         String info = """

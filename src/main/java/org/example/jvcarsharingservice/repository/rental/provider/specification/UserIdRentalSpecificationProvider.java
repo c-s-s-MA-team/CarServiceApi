@@ -7,16 +7,26 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReturnDateSpecificationProvider implements SpecificationProvider<Rental> {
+public class UserIdRentalSpecificationProvider implements SpecificationProvider<Rental> {
 
     @Override
     public String getKey() {
-        return "returnDate";
+        return "userId";
     }
 
+    @Override
     public Specification<Rental> getSpecification(String[] params) {
+        return null;
+    }
+
+    public Specification<Rental> getSpecification(Long[] params) {
         return (root, query, criteriaBuilder) -> root
-                .get("returnDate").in(
-                        Arrays.stream(params).toArray());
+                .get("userId")
+                .in(Arrays.stream(params).toArray());
+    }
+
+    @Override
+    public Specification<Rental> getSpecification(Boolean params) {
+        return null;
     }
 }

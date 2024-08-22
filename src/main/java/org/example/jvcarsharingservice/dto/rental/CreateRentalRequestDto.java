@@ -1,4 +1,10 @@
 package org.example.jvcarsharingservice.dto.rental;
 
-public class CreateRentalRequestDto {
+import java.time.LocalDate;
+
+public record CreateRentalRequestDto(
+        LocalDate rentalDate,
+        LocalDate returnDate,
+        Long carId
+) {
 }

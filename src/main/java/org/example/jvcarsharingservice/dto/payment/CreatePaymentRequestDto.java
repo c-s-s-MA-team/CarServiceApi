@@ -1,4 +1,6 @@
 package org.example.jvcarsharingservice.dto.payment;
 
-public class CreatePaymentRequestDto {
+public record CreatePaymentRequestDto(
+        Long rentalId
+) {
 }

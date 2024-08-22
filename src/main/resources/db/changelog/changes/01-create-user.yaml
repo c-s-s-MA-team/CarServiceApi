@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01-create-user
+      author: bw
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: email
+                  value: admin@admin.com
+              - column:
+                  name: first_name
+                  value: password
+              - column:
+                  name: last_name
+                  value: password
+              - column:
+                  name: password
+                  value: $2a$10$OS/X7/9GMWlsZICdLxTAN.ORs0lhnpWEO4M/53GPKp/PdkqV4QC.2
+              - column:
+                  name: role
+                  value: MANAGER

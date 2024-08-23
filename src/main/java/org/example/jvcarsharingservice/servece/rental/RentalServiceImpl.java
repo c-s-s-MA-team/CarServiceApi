@@ -71,10 +71,6 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public void returnRental(User user, Long id) {
-        updateCarInventoryAfterReturnRent(user, id);
-    }
-
-    private void updateCarInventoryAfterReturnRent(User user, Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Rental with id " + id + " not found")
         );
@@ -103,7 +99,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     private static void checkIfThisRentIsForCorrectUser(User user, Rental rental) {
-        if (user.getId() != rental.getUserId()) {
+        if (!user.getId().equals(rental.getUserId())) {
             throw new EntityNotFoundException(
                     "User with id " + user.getId()
                     + " does not belong to this Rental"

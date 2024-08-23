@@ -40,8 +40,8 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 class RentalsControllerTest {
     public static final long ID = 1L;
     public static final String EMAIL = "admin@admin.com";
-    public static final String FIRST_NAME = "B";
-    public static final String LAST_NAME = "W";
+    public static final String FIRST_NAME = "Admin";
+    public static final String LAST_NAME = "User";
     public static final String PASSWORD = "password";
     public static final Role ROLE = Role.MANAGER;
     public static final LocalDate RENTAL_DATE = LocalDate.of(2024, 8, 1);

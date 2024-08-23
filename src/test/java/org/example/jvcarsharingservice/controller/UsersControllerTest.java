@@ -35,8 +35,8 @@ import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 class UsersControllerTest {
     public static final long ID = 1L;
     public static final String EMAIL = "admin@admin.com";
-    public static final String FIRST_NAME = "B";
-    public static final String LAST_NAME = "W";
+    public static final String FIRST_NAME = "Admin";
+    public static final String LAST_NAME = "User";
     public static final String PASSWORD = "password";
     public static final Role ROLE = Role.MANAGER;
     private static MockMvc mockMvc;
@@ -71,7 +71,11 @@ class UsersControllerTest {
     @Test
     @WithMockUser(username = "user", authorities = {"MANAGER"})
     @DisplayName("Test updating user role successfully - MANAGER only")
-    @Sql(scripts = "classpath:db/controller/add-to-users.sql")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:db/controller/delete-from-users.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateUserRole_Success() throws Exception {
         //given
         UserDto userDto = getUserDto();
@@ -93,8 +97,7 @@ class UsersControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
-    @DisplayName("""
-            """)
+    @DisplayName("Get the profile of the currently authenticated user successfully")
     void getMyProfile_Success() throws Exception {
         UserDto userDto = getUserDto();
 
@@ -112,8 +115,9 @@ class UsersControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
-    @DisplayName("""
-            """)
+    @Sql(scripts = {"classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DisplayName("Update own profile successfully")
     void updateMyProfile_Success() throws Exception {
         UpdateUserRequestDto updateUserRequestDto = getUpdateUserRequestDto();
         UserDto userDto = getUserDto();

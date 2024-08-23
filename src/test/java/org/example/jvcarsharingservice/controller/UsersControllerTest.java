@@ -21,10 +21,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
@@ -89,10 +91,47 @@ class UsersControllerTest {
         EqualsBuilder.reflectionEquals(userDto, actual, "id");
     }
 
-    private UpdateUserRequestDto getUpdateUserRequestDto() {
-        return new UpdateUserRequestDto(
-                FIRST_NAME, LAST_NAME
-        );
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("""
+            """)
+    void getMyProfile_Success() throws Exception {
+        UserDto userDto = getUserDto();
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.get("/users/me")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        UserDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                UserDto.class);
+
+        EqualsBuilder.reflectionEquals(userDto, actual, "id");
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("""
+            """)
+    void updateMyProfile_Success() throws Exception {
+        UpdateUserRequestDto updateUserRequestDto = getUpdateUserRequestDto();
+        UserDto userDto = getUserDto();
+
+        String json = objectMapper.writeValueAsString(updateUserRequestDto);
+
+        MvcResult result = mockMvc.perform(
+                        MockMvcRequestBuilders.put("/users/me")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        UserDto actual = objectMapper.readValue(result.getResponse().getContentAsString(),
+                UserDto.class);
+
+        EqualsBuilder.reflectionEquals(userDto, actual, "id");
+
     }
 
     private User getUser() {
@@ -115,5 +154,11 @@ class UsersControllerTest {
         userDto.setLastName(LAST_NAME);
         userDto.setRole(String.valueOf(ROLE));
         return userDto;
+    }
+
+    private UpdateUserRequestDto getUpdateUserRequestDto() {
+        return new UpdateUserRequestDto(
+                FIRST_NAME, LAST_NAME
+        );
     }
 }

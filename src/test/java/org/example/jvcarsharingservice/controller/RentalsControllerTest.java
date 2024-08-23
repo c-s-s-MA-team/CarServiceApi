@@ -3,7 +3,6 @@ package org.example.jvcarsharingservice.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -17,7 +16,6 @@ import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.model.enums.Role;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +45,7 @@ class RentalsControllerTest {
     public static final String PASSWORD = "password";
     public static final Role ROLE = Role.MANAGER;
     public static final LocalDate RENTAL_DATE = LocalDate.of(2024, 8, 1);
-    public static final LocalDate RETURN_DATE = LocalDate.of(2024, 8, 5);
+    public static final LocalDate RETURN_DATE = LocalDate.of(2024, 9, 29);
     public static final LocalDate ACTUAL_RETURN_DATE = LocalDate.of(2024, 8, 5);
     public static final String[] USER_ID = {"1"};
     public static final boolean IS_ACTIVE = true;
@@ -84,6 +82,8 @@ class RentalsControllerTest {
     @WithUserDetails(value = "admin@admin.com")
     @Sql(scripts = {"classpath:db/controller/add-to-cars.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("""
             """)
     void addRental_Success() throws Exception {
@@ -112,6 +112,9 @@ class RentalsControllerTest {
     @Sql(scripts = {"classpath:db/controller/add-to-cars.sql",
             "classpath:db/controller/add-to-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql",
+            "classpath:db/controller/delete-from-rentals.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("""
             """)
     void getRentals_Success() throws Exception {
@@ -129,7 +132,8 @@ class RentalsControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<RentalDto> actual = Arrays.asList(objectMapper.readValue(result.getResponse().getContentAsString(),
+        List<RentalDto> actual = Arrays.asList(
+                objectMapper.readValue(result.getResponse().getContentAsString(),
                 RentalDto[].class));
 
         EqualsBuilder.reflectionEquals(rentalDto, actual.get(0), "id");
@@ -138,7 +142,10 @@ class RentalsControllerTest {
     @Test
     @WithMockUser(username = "user", authorities = {"MANAGER"})
     @DisplayName("Test getting specific rental successfully - MANAGER only")
-    @Sql(scripts = "classpath:db/controller/add-to-rentals.sql")
+    @Sql(scripts = {"classpath:db/controller/add-to-rentals.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getRental_Success() throws Exception {
         //given
         RentalDto rentalDto = getRentalDto();
@@ -159,9 +166,12 @@ class RentalsControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
-    @Sql(scripts = {"classpath:db/controller/add-to-rentals2.sql",
+    @Sql(scripts = {"classpath:db/controller/add-to-rentals.sql",
             "classpath:db/controller/add-to-cars.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql",
+            "classpath:db/controller/delete-from-cars.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("""
             """)
     void returnRental_Success() throws Exception {

@@ -1,11 +1,17 @@
 package org.example.jvcarsharingservice.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.util.Arrays;
+import java.util.List;
+import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -25,14 +31,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
-
-import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PaymentsControllerTest {
@@ -106,6 +104,9 @@ class PaymentsControllerTest {
     @Sql(scripts = {"classpath:db/controller/add-to-rentals.sql",
                     "classpath:db/controller/add-to-cars.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql",
+                    "classpath:db/controller/delete-from-cars.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @SneakyThrows
     void createPaymentSession_Success() {
         // Given
@@ -126,7 +127,6 @@ class PaymentsControllerTest {
                 PaymentDto.class);
         EqualsBuilder.reflectionEquals(paymentDto, actual, "id");
     }
-
 
     private PaymentDto getPaymentDto() {
         PaymentDto paymentDto = new PaymentDto();

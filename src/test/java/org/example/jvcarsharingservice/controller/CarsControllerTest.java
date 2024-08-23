@@ -105,9 +105,9 @@ class CarsControllerTest {
     @Test
     @WithMockUser(username = "admin", authorities = {"MANAGER"})
     @DisplayName("Test retrieving a list of cars successfully - MANAGER & CUSTOMER")
-    @Sql(scripts = "/db/controller/add-to-cars2.sql",
+    @Sql(scripts = "/db/controller/add-to-cars.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/db/controller/delete-from-cars2.sql",
+    @Sql(scripts = "/db/controller/delete-from-cars.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getCars_Success() throws Exception {
         //given

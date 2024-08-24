@@ -102,10 +102,13 @@ class PaymentsControllerTest {
     @WithUserDetails(value = "admin@admin.com")
     @DisplayName("Test for successful creation of payment session")
     @Sql(scripts = {"classpath:db/controller/add-to-rentals.sql",
-                    "classpath:db/controller/add-to-cars.sql"},
+                    "classpath:db/controller/add-to-cars.sql",
+            "classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql",
-                    "classpath:db/controller/delete-from-cars.sql"},
+                    "classpath:db/controller/delete-from-cars.sql",
+                    "classpath:db/controller/delete-from-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @SneakyThrows
     void createPaymentSession_Success() {

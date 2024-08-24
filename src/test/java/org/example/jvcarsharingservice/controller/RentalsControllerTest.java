@@ -80,9 +80,11 @@ class RentalsControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
-    @Sql(scripts = {"classpath:db/controller/add-to-cars.sql"},
+    @Sql(scripts = {"classpath:db/controller/add-to-cars.sql",
+            "classpath:db/controller/add-to-users.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql"},
+    @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql",
+            "classpath:db/controller/delete-from-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("""
             """)
@@ -167,7 +169,8 @@ class RentalsControllerTest {
     @Test
     @WithUserDetails(value = "admin@admin.com")
     @Sql(scripts = {"classpath:db/controller/add-to-rentals.sql",
-            "classpath:db/controller/add-to-cars.sql"},
+            "classpath:db/controller/add-to-cars.sql",
+            "classpath:db/controller/add-to-users.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql",
             "classpath:db/controller/delete-from-cars.sql"},

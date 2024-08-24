@@ -164,7 +164,10 @@ class CarsControllerTest {
     @Test
     @WithMockUser(username = "admin", authorities = {"MANAGER"})
     @DisplayName("Test updating a car successfully - MANAGER only")
-    @Sql(scripts = "classpath:db/controller/add-to-cars.sql")
+    @Sql(scripts = "classpath:db/controller/add-to-cars.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:db/controller/delete-from-cars.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateCar_Success() throws Exception {
         //given
         Long id = ID;

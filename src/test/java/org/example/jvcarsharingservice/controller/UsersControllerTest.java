@@ -74,7 +74,7 @@ class UsersControllerTest {
     @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
             "classpath:db/controller/add-to-users.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:db/controller/delete-from-users.sql",
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateUserRole_Success() throws Exception {
         //given
@@ -117,6 +117,8 @@ class UsersControllerTest {
     @WithUserDetails(value = "admin@admin.com")
     @Sql(scripts = {"classpath:db/controller/add-to-users.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Update own profile successfully")
     void updateMyProfile_Success() throws Exception {
         UpdateUserRequestDto updateUserRequestDto = getUpdateUserRequestDto();

@@ -86,8 +86,7 @@ class RentalsControllerTest {
     @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql",
             "classpath:db/controller/delete-from-users.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("""
-            """)
+    @DisplayName("Test adding a rental successfully")
     void addRental_Success() throws Exception {
         CreateRentalRequestDto createRentalRequestDto = getCreateRentalRequestDto();
         RentalDto rentalDto = getRentalDto();
@@ -117,8 +116,7 @@ class RentalsControllerTest {
     @Sql(scripts = {"classpath:db/controller/delete-from-cars.sql",
             "classpath:db/controller/delete-from-rentals.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("""
-            """)
+    @DisplayName("Test getting all rentals successfully with search parameters")
     void getRentals_Success() throws Exception {
         RentalSearchParameters parameters = getRentalSearchParameters();
 
@@ -175,8 +173,7 @@ class RentalsControllerTest {
     @Sql(scripts = {"classpath:db/controller/delete-from-rentals.sql",
             "classpath:db/controller/delete-from-cars.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("""
-            """)
+    @DisplayName("Test returning a rental successfully")
     void returnRental_Success() throws Exception {
         long id = ID;
 

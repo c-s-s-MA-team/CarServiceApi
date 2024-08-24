@@ -47,7 +47,7 @@ public class RentalsController {
 
     @Operation(summary = "Get specific rental - MANAGER only ")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('MANAGER'')")
+    @PreAuthorize("hasAnyAuthority('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
     public RentalDto getRental(@PathVariable Long id) {
         return rentalService.getRental(id);

@@ -69,7 +69,7 @@ The controllers in this application are designed with usability and security in 
 
 ## Data Models
 
-![Architecture Diagram](car service from sql workbench.png)
+![Architecture Diagram](entities.png)
 
 ### 1. Car
 - **Model:** String

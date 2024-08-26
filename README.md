@@ -123,3 +123,19 @@ The controllers in this application are designed with usability and security in 
 
 ### After starting the application, the API documentation will be available at:
 http://localhost:8080/swagger-ui.html
+
+## Login Credentials For Default Users
+
+### MANAGER:
+
+Email: admin@admin.com
+Password: password
+
+### User:
+
+Email: customer@customer.com
+Password: password
+
+## Application 
+
+- **Developer**: Bartosz Wójcik

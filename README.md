@@ -1,37 +1,29 @@
 
 # JV Car Sharing Service
 
-The **JV Car Sharing Service** is a web-based application designed to manage a car-sharing service, including inventory management, car rentals, customer management, and payment handling. The system is built to be scalable and secure, supporting both administrators and customers.
+The **JV Car Sharing Service API** is a backend application that provides an API for managing car rentals, users, payments, and authentication in a car-sharing service. This project is designed to make car-sharing services easy to manage by offering set of API interfaces that support CRUD (Create, Read, Update, Delete) operations and secure authentication.
 
-## Functional Requirements
+## Technologies and Tools
 
-### 1. Web-Based Application
-- The application will be accessible through a web interface, allowing users to manage car sharing and rental activities.
+This project utilizes a range of modern technologies and tools to create a secure, efficient, and scalable API:
 
-### 2. Manage Car Sharing Inventory
-- Administrators can add, update, delete, and view details of cars available in the inventory.
-- Cars have attributes such as model, brand, type, available inventory, and daily fee.
-
-### 3. Manage Car Rentals
-- Users (customers) can rent cars from the available inventory.
-- Administrators can view and manage all rentals.
-- The system will track rental start and return dates, and calculate the total fee.
-
-### 4. Manage Customers
-- Users can register and update their profiles.
-- Administrators can assign roles (Manager or Customer) to users.
-
-### 5. Display Notifications
-- Notifications will be sent for new rentals, overdue returns, and successful payments.
-- Notifications will be sent to administrators via Telegram.
-
-### 6. Handle Payments
-- The application will integrate with the Stripe API for secure payment processing.
-- Payments will be tracked, and users can view their payment history.
+- **Spring Boot 3.3.2** - Facilitates rapid development of Java applications with minimal configuration.
+- **Spring Security 6.3.2** - Ensures secure access to the API through authentication and authorization.
+- **Spring Data JPA** - Simplifies data management with the Java Persistence API.
+- **Swagger (Springdoc OpenAPI)** - Automatically generates API documentation.
+- **MapStruct** - Facilitates the mapping of DTO objects within the application.
+- **JWT (JSON Web Token)** - Implements JWT tokens for secure authentication.
+- **Liquibase** - Manages database migrations and schema versioning.
+- **Hibernate Validator** - Validates input data.
+- **Testcontainers** - Creates isolated testing environments using Docker containers.
+- **H2 Database** - Used for testing purposes.
+- **MySQL** - Used as the production database.
+- **Lombok** - Reduces boilerplate code by automatically generating getters, setters, and other methods.
+- **Checkstyle** - Ensures code compliance with coding standards.
 
 ## Architecture Overview
 
-The **JV Car Sharing Service** is built using a microservices architecture with the following components:
+The controllers in this application are designed with usability and security in mind:
 
 - **Authentication Service:** Handles user registration, login, and JWT token generation.
 - **User Management Service:** Manages user profiles and roles.
@@ -40,7 +32,44 @@ The **JV Car Sharing Service** is built using a microservices architecture with 
 - **Payment Service:** Integrates with Stripe for payment processing.
 - **Notification Service:** Sends notifications via Telegram to administrators.
 
+### API Controllers
+
+## Authentication Controller
+
+- **POST** `/auth/register` - Register a new user.
+- **POST** `/auth/login` - Authenticate the user and obtain JWT tokens.
+
+## Users Controller
+
+- **PUT** `/users/{id}/role` - Update a user's role.
+- **GET** `/users/me` - Retrieve the authenticated user's profile information.
+- **PUT/PATCH** `/users/me` - Update the authenticated user's profile information.
+
+## Cars Controller
+
+- **POST** `/cars` - Add a new car (Manager only).
+- **GET** `/cars` - Get a list of all available cars.
+- **GET** `/cars/{id}` - Get detailed information about a specific car.
+- **PUT** `/cars/{id}` - Update details of a car (Manager only).
+- **DELETE** `/cars/{id}` - Delete a car (Manager only).
+
+## Rentals Controller
+
+- **POST** `/rentals` - Add a new rental.
+- **GET** `/rentals` - Get a list of rentals by user ID and rental status (Manager only).
+- **GET** `/rentals/{id}` - Get specific rental details (Manager only).
+- **POST** `/rentals/{id}/return` - Return a rental.
+
+## Payments Controller
+
+- **GET** `/payments` - Get a list of payments by user ID (Manager only).
+- **POST** `/payments` - Create a new payment session.
+- **GET** `/payments/success/{sessionId}` - Check the success of a Stripe payment.
+- **GET** `/payments/cancel/{sessionId}` - Return a paused payment message.
+
 ## Data Models
+
+![Architecture Diagram](entities.png)
 
 ### 1. Car
 - **Model:** String
@@ -71,35 +100,26 @@ The **JV Car Sharing Service** is built using a microservices architecture with 
 - **Session ID:** String (ID of the payment session)
 - **Amount to Pay:** decimal (in $USD)
 
-## API Controllers
+## Configuration Instructions
 
-### 1. Authentication Controller
-- **POST** `/register` - Register a new user.
-- **POST** `/login` - Authenticate a user and obtain JWT tokens.
+### Prerequisites
 
-### 2. Users Controller
-- **PUT** `/users/{id}/role` - Update a user's role.
-- **GET** `/users/me` - Retrieve the authenticated user's profile information.
-- **PUT/PATCH** `/users/me` - Update the authenticated user's profile information.
+- Java 17
+- Docker
 
-### 3. Cars Controller
-- **POST** `/cars` - Add a new car (MANAGER only).
-- **GET** `/cars` - Retrieve a list of available cars.
-- **GET** `/cars/{id}` - Get detailed information about a specific car.
-- **PUT/PATCH** `/cars/{id}` - Update information about a specific car (MANAGER only).
-- **DELETE** `/cars/{id}` - Delete a specific car (MANAGER only).
+### Setup Steps
 
-### 4. Rentals Controller
-- **POST** `/rentals` - Create a new rental and decrease car inventory by 1.
-- **GET** `/rentals` - Retrieve rentals based on user ID and rental status.
-- **GET** `/rentals/{id}` - Retrieve details of a specific rental.
-- **POST** `/rentals/{id}/return` - Mark a rental as returned and increase car inventory by 1.
+1. Check if you have Git installed: `git --version`
+2. Clone the repository using SSH: `git clone git@github.com:...`
+3. Alternatively, use HTTPS: `git clone https://...`
+4. Navigate into the cloned repository: `cd jv-car-sharing-service`
+5. (Optional) Check the repository status: `git status`
 
-### 5. Payments Controller
-- **GET** `/payments` - Retrieve payments based on user ID.
-- **POST** `/payments` - Create a new payment session.
-- **GET** `/payments/success/{sessionId}` - Confirm successful payment.
-- **GET** `/payments/cancel/{sessionId}` - Handle payment cancellation.
+### Build the project:
+./mvnw clean package
 
-### 6. Notifications Service
-- Integrates with the Telegram API to send notifications about new rentals, overdue rentals, and successful payments.
+### Start the project:
+ **Start Docker**: Make sure Docker is up and running before you proceed with the setup.
+
+### After starting the application, the API documentation will be available at:
+http://localhost:8080/swagger-ui.html

@@ -20,7 +20,7 @@ import org.example.jvcarsharingservice.model.enums.PaymentType;
 import org.example.jvcarsharingservice.model.enums.Status;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.payment.PaymentRepository;
-import org.example.jvcarsharingservice.repository.payment.provider.PaymentPaymentSpecificationBuilder;
+import org.example.jvcarsharingservice.repository.payment.provider.PaymentSpecificationBuilderImpl;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
 import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private static final String paymentDomain = "/payments/";
-    public static final String COMPLETE = "complete";
-    public static final String OPEN = "open";
+    private static final String COMPLETE = "complete";
+    private static final String OPEN = "open";
     @Value("${domain}")
     private String domain;
     private final RentalRepository rentalRepository;
@@ -41,7 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final NotificationService notificationService;
-    private final PaymentPaymentSpecificationBuilder paymentSpecificationBuilder;
+    private final PaymentSpecificationBuilderImpl paymentSpecificationBuilder;
 
     @Override
     @Transactional

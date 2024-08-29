@@ -1,6 +1,7 @@
 package org.example.jvcarsharingservice.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
@@ -14,8 +15,6 @@ import org.example.jvcarsharingservice.repository.role.RoleRepository;
 import org.example.jvcarsharingservice.repository.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

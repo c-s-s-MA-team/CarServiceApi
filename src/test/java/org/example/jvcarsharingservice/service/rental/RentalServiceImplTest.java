@@ -181,7 +181,6 @@ class RentalServiceImplTest {
         user.setFirstName(FIRST_NAME);
         user.setLastName(LAST_NAME);
         user.setPassword(PASSWORD);
-        user.setRole(ROLE);
         user.setDeleted(false);
         return user;
     }

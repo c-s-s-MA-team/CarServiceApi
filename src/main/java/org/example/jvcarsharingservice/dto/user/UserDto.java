@@ -1,7 +1,5 @@
 package org.example.jvcarsharingservice.dto.user;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data

@@ -3,7 +3,6 @@ package org.example.jvcarsharingservice.repository.payment.provider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
-import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Payment;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
 import org.example.jvcarsharingservice.repository.payment.PaymentSpecificationBuilder;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PaymentPaymentSpecificationBuilder implements PaymentSpecificationBuilder<Payment> {
+public class PaymentSpecificationBuilderImpl implements PaymentSpecificationBuilder<Payment> {
     private final SpecificationProviderManager<Payment> specificationProviderManager;
 
     @Override

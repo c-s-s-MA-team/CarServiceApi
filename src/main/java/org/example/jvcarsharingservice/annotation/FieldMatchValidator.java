@@ -2,7 +2,6 @@ package org.example.jvcarsharingservice.annotation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
@@ -32,11 +31,11 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
                 || (firstField != null && firstField.equals(secondField));
 
         if (!valid) {
-        context.buildConstraintViolationWithTemplate(message)
-                .addPropertyNode(firstFieldName)
-                .addConstraintViolation()
-                .disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(message)
+                    .addPropertyNode(firstFieldName)
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
         }
         return valid;
     }
-    }
+}

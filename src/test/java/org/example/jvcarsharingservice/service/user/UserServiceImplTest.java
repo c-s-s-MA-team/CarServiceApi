@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.user;
+package org.example.jvcarsharingservice.service.user;
 
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.times;
@@ -12,7 +12,7 @@ import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.mapper.UserMapper;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.model.enums.Role;
+import org.example.jvcarsharingservice.model.enums.RoleName;
 import org.example.jvcarsharingservice.repository.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ class UserServiceImplTest {
     public static final String FIRST_NAME = "B";
     public static final String LAST_NAME = "W";
     public static final String PASSWORD = "password";
-    public static final Role ROLE = Role.MANAGER;
+    public static final RoleName ROLE = RoleName.MANAGER;
 
     @Mock
     private UserRepository userRepository;

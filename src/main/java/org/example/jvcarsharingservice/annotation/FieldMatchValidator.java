@@ -3,6 +3,7 @@ package org.example.jvcarsharingservice.annotation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
 
@@ -19,23 +20,23 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        try {
-            Object firstObj = BeanUtils.getProperty(value, firstFieldName);
-            Object secondObj = BeanUtils.getProperty(value, secondFieldName);
-
-            boolean valid = (firstObj == null && secondObj == null)
-                    || (firstObj != null && firstObj.equals(secondObj));
-
-            if (!valid) {
-                context.buildConstraintViolationWithTemplate(message)
-                        .addPropertyNode(firstFieldName)
-                        .addConstraintViolation()
-                        .disableDefaultConstraintViolation();
-            }
-
-            return valid;
-        } catch (Exception e) {
-            return false;
+        if (value == null) {
+            return true;
         }
+
+        BeanWrapperImpl wrapper = new BeanWrapperImpl(value);
+        Object firstField = wrapper.getPropertyValue(firstFieldName);
+        Object secondField = wrapper.getPropertyValue(secondFieldName);
+
+        boolean valid = (firstField == null && secondField == null)
+                || (firstField != null && firstField.equals(secondField));
+
+        if (!valid) {
+        context.buildConstraintViolationWithTemplate(message)
+                .addPropertyNode(firstFieldName)
+                .addConstraintViolation()
+                .disableDefaultConstraintViolation();
+        }
+        return valid;
     }
-}
+    }

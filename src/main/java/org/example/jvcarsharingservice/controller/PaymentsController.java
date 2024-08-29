@@ -8,7 +8,7 @@ import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentDto;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.servece.payment.PaymentService;
+import org.example.jvcarsharingservice.service.payment.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

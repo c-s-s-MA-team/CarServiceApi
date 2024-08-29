@@ -7,7 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class IsActiveSpecificationProvider implements SpecificationProvider<Rental> {
+public class IsUserHaveTimeToReturnSpecificationProvider implements SpecificationProvider<Rental> {
+
+    public static final String ACTUAL_RETURN_DATE = "actualReturnDate";
+    public static final String RETURN_DATE = "returnDate";
+
     @Override
     public String getKey() {
         return "isActive";
@@ -32,19 +36,19 @@ public class IsActiveSpecificationProvider implements SpecificationProvider<Rent
             if (params) {
                 return criteriaBuilder.and(
                         criteriaBuilder.isNull(
-                                root.get("actualReturnDate")
+                                root.get(ACTUAL_RETURN_DATE)
                         ),
                         criteriaBuilder.greaterThanOrEqualTo(
-                                root.get("returnDate"),
+                                root.get(RETURN_DATE),
                                 LocalDate.now()
                         ));
             } else {
                 return criteriaBuilder.or(
                         criteriaBuilder.isNotNull(
-                                root.get("actualReturnDate")
+                                root.get(ACTUAL_RETURN_DATE)
                         ),
                         criteriaBuilder.lessThan(
-                                root.get("returnDate"),
+                                root.get(RETURN_DATE),
                                 LocalDate.now()
                         ));
             }

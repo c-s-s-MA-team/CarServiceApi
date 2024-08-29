@@ -15,7 +15,7 @@ import org.example.jvcarsharingservice.dto.rental.RentalDto;
 import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.model.enums.Role;
+import org.example.jvcarsharingservice.model.enums.RoleName;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +43,7 @@ class RentalsControllerTest {
     public static final String FIRST_NAME = "Admin";
     public static final String LAST_NAME = "User";
     public static final String PASSWORD = "password";
-    public static final Role ROLE = Role.MANAGER;
+    public static final RoleName ROLE = RoleName.MANAGER;
     public static final LocalDate RENTAL_DATE = LocalDate.of(2024, 8, 1);
     public static final LocalDate RETURN_DATE = LocalDate.of(2024, 9, 29);
     public static final LocalDate ACTUAL_RETURN_DATE = LocalDate.of(2024, 8, 5);

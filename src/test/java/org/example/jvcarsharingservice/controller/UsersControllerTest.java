@@ -10,7 +10,7 @@ import lombok.SneakyThrows;
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.model.enums.Role;
+import org.example.jvcarsharingservice.model.enums.RoleName;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ class UsersControllerTest {
     public static final String FIRST_NAME = "Admin";
     public static final String LAST_NAME = "User";
     public static final String PASSWORD = "password";
-    public static final Role ROLE = Role.MANAGER;
+    public static final RoleName ROLE = RoleName.MANAGER;
     private static MockMvc mockMvc;
 
     @Autowired

@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.user;
+package org.example.jvcarsharingservice.service.user;
 
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;

@@ -17,7 +17,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,6 +45,6 @@ public class Car {
     @Column(name = "daily_fee", nullable = false, precision = 10, scale = 2)
     private BigDecimal dailyFee;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "deleted",nullable = false)
+    private boolean isDeleted = false;
 }

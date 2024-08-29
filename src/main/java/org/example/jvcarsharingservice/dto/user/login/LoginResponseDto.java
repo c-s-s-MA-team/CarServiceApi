@@ -1,4 +1,8 @@
 package org.example.jvcarsharingservice.dto.user.login;
 
-public record LoginResponseDto(String token) {
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginResponseDto(
+        @NotBlank
+        String token) {
 }

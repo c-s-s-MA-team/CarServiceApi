@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.car;
+package org.example.jvcarsharingservice.service.car;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;

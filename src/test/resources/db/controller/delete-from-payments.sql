@@ -1,1 +1,1 @@
-DELETE FROM payment WHERE id = 1;
+DELETE FROM payments WHERE id = 1;

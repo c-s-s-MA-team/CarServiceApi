@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.car;
+package org.example.jvcarsharingservice.service.car;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;

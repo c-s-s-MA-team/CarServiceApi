@@ -1,5 +1,5 @@
 package org.example.jvcarsharingservice.model.enums;
 
-public enum Role {
+public enum RoleName {
     MANAGER, CUSTOMER
 }

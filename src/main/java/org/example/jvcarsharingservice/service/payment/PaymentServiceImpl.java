@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.payment;
+package org.example.jvcarsharingservice.service.payment;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -20,17 +20,20 @@ import org.example.jvcarsharingservice.model.enums.PaymentType;
 import org.example.jvcarsharingservice.model.enums.Status;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.payment.PaymentRepository;
-import org.example.jvcarsharingservice.repository.payment.provider.PaymentSpecificationBuilder;
+import org.example.jvcarsharingservice.repository.payment.provider.PaymentPaymentSpecificationBuilder;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
-import org.example.jvcarsharingservice.servece.notification.NotificationService;
+import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private static final String paymentDomain = "/payments/";
+    public static final String COMPLETE = "complete";
+    public static final String OPEN = "open";
     @Value("${domain}")
     private String domain;
     private final RentalRepository rentalRepository;
@@ -38,9 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
     private final NotificationService notificationService;
-    private final PaymentSpecificationBuilder paymentSpecificationBuilder;
+    private final PaymentPaymentSpecificationBuilder paymentSpecificationBuilder;
 
     @Override
+    @Transactional
     public PaymentDto createPayment(User user, CreatePaymentRequestDto requestDto) {
         Rental rental = rentalRepository.findById(requestDto.rentalId()).orElseThrow(
                 () -> new EntityNotFoundException(
@@ -50,14 +54,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         try {
             Session session = createStripeSession(total, rental);
-            Payment paymentEntity = getPayment(Status.PENDING,
+            Payment payment = getPayment(Status.PENDING,
                     PaymentType.PAYMENT,
                     rental,
                     total,
                     session);
 
             return paymentMapper.toDto(
-                    paymentRepository.save(paymentEntity));
+                    paymentRepository.save(payment));
 
         } catch (StripeException e) {
             throw new PaymentException("cannot create payment", e);
@@ -113,10 +117,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public String checkPaymentSuccess(String sessionId) {
         try {
             Session session = Session.retrieve(sessionId);
-            if ("complete".equals(session.getStatus())) {
+            if (COMPLETE.equals(session.getStatus())) {
                 Payment payment = paymentRepository.findBySessionId(sessionId).orElseThrow(
                         () -> new PaymentException("Cannot find payment with session id "
                                 + sessionId)
@@ -135,10 +140,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public String pausePayment(String sessionId) {
         try {
             Session session = Session.retrieve(sessionId);
-            if ("open".equals(session.getStatus())) {
+            if (OPEN.equals(session.getStatus())) {
                 Payment payment = paymentRepository.findBySessionId(sessionId).orElseThrow(
                         () -> new PaymentException("Cannot find payment with session id "
                                 + sessionId)

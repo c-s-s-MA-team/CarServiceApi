@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.servece.user.UserService;
+import org.example.jvcarsharingservice.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

@@ -2,17 +2,16 @@ package org.example.jvcarsharingservice.repository.rental.provider;
 
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
-import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
 import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Rental;
-import org.example.jvcarsharingservice.repository.SpecificationBuilder;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
+import org.example.jvcarsharingservice.repository.rental.RentalSpecBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> {
+public class RentalSpecificationBuilder implements RentalSpecBuilder<Rental> {
 
     private final SpecificationProviderManager<Rental> specificationProviderManager;
 
@@ -35,10 +34,5 @@ public class RentalSpecificationBuilder implements SpecificationBuilder<Rental> 
                             .getSpecification(searchParameters.isActive()));
         }
         return spec;
-    }
-
-    @Override
-    public Specification<Rental> build(PaymentSearchParameters searchParameters) {
-        return null;
     }
 }

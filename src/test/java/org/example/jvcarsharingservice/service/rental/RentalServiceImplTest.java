@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.rental;
+package org.example.jvcarsharingservice.service.rental;
 
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyString;
@@ -17,11 +17,11 @@ import org.example.jvcarsharingservice.mapper.RentalMapper;
 import org.example.jvcarsharingservice.model.classes.Car;
 import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.model.enums.Role;
+import org.example.jvcarsharingservice.model.enums.RoleName;
 import org.example.jvcarsharingservice.model.enums.Type;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
-import org.example.jvcarsharingservice.servece.notification.NotificationService;
+import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ class RentalServiceImplTest {
     public static final String FIRST_NAME = "B";
     public static final String LAST_NAME = "W";
     public static final String PASSWORD = "password";
-    public static final Role ROLE = Role.MANAGER;
+    public static final RoleName ROLE = RoleName.MANAGER;
     public static final LocalDate RENTAL_DATE = LocalDate.of(2024, 8, 1);
     public static final LocalDate RETURN_DATE = LocalDate.of(2024, 8, 5);
     public static final LocalDate ACTUAL_RETURN_DATE = LocalDate.of(2024, 8, 5);

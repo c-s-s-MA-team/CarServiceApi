@@ -1,7 +1,7 @@
 package org.example.jvcarsharingservice.repository.user;
 
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.model.enums.Role;
+import org.example.jvcarsharingservice.model.enums.RoleName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class UserRepositoryTest {
         user.setId(1L);
         user.setFirstName("B");
         user.setLastName("C");
-        user.setRole(Role.MANAGER);
+        user.setRole(RoleName.MANAGER);
         user.setPassword("password");
         user.setEmail("admin@admin.com");
         user.setDeleted(false);

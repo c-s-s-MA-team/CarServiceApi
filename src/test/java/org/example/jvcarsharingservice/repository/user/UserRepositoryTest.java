@@ -1,8 +1,11 @@
 package org.example.jvcarsharingservice.repository.user;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.model.enums.Role;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +33,14 @@ class UserRepositoryTest {
 
         User user = userRepository.findUserByEmail(email).orElse(null);
 
-        Assertions.assertAll(
-                () -> Assertions.assertNotNull(user),
-                () -> Assertions.assertEquals(email, user.getEmail()),
-                () -> Assertions.assertEquals(testUser.getId(), user.getId()),
-                () -> Assertions.assertEquals(testUser.getEmail(), user.getEmail()),
-                () -> Assertions.assertEquals(testUser.getRole(), user.getRole()),
-                () -> Assertions.assertEquals(testUser.getFirstName(), user.getFirstName()),
-                () -> Assertions.assertEquals(testUser.getLastName(), user.getLastName())
+        assertAll(
+                () -> assertNotNull(user),
+                () -> assertEquals(email, user.getEmail()),
+                () -> assertEquals(testUser.getId(), user.getId()),
+                () -> assertEquals(testUser.getEmail(), user.getEmail()),
+                () -> assertEquals(testUser.getRole(), user.getRole()),
+                () -> assertEquals(testUser.getFirstName(), user.getFirstName()),
+                () -> assertEquals(testUser.getLastName(), user.getLastName())
         );
     }
 

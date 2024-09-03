@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.user;
+package org.example.jvcarsharingservice.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

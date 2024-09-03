@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.payment;
+package org.example.jvcarsharingservice.service.payment;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
@@ -22,7 +22,7 @@ import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.payment.PaymentRepository;
 import org.example.jvcarsharingservice.repository.payment.provider.PaymentSpecificationBuilder;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
-import org.example.jvcarsharingservice.servece.notification.NotificationService;
+import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private static final String paymentDomain = "/payments/";
+    private static final String COMPLETE = "complete";
+    private static final String OPEN = "open";
+    private static final String USD = "usd";
     @Value("${domain}")
     private String domain;
     private final RentalRepository rentalRepository;
@@ -71,7 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .setCancelUrl(domain + paymentDomain + "cancel/{CHECKOUT_SESSION_ID}")
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
-                                .setCurrency("usd")
+                                .setCurrency(USD)
                                 .setUnitAmount(total.multiply(BigDecimal.valueOf(100)).longValue())
                                 .setProductData(
                                         SessionCreateParams.LineItem.PriceData.ProductData.builder()
@@ -116,7 +119,7 @@ public class PaymentServiceImpl implements PaymentService {
     public String checkPaymentSuccess(String sessionId) {
         try {
             Session session = Session.retrieve(sessionId);
-            if ("complete".equals(session.getStatus())) {
+            if (COMPLETE.equals(session.getStatus())) {
                 Payment payment = paymentRepository.findBySessionId(sessionId).orElseThrow(
                         () -> new PaymentException("Cannot find payment with session id "
                                 + sessionId)
@@ -138,7 +141,7 @@ public class PaymentServiceImpl implements PaymentService {
     public String pausePayment(String sessionId) {
         try {
             Session session = Session.retrieve(sessionId);
-            if ("open".equals(session.getStatus())) {
+            if (OPEN.equals(session.getStatus())) {
                 Payment payment = paymentRepository.findBySessionId(sessionId).orElseThrow(
                         () -> new PaymentException("Cannot find payment with session id "
                                 + sessionId)

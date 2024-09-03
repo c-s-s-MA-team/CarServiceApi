@@ -21,11 +21,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class User implements UserDetails {
 
@@ -36,10 +36,10 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @Column(nullable = false)
@@ -49,8 +49,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "deleted", nullable = false)
+    private boolean isDeleted = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.rental;
+package org.example.jvcarsharingservice.service.rental;
 
 import java.util.List;
 import org.example.jvcarsharingservice.dto.rental.CreateRentalRequestDto;

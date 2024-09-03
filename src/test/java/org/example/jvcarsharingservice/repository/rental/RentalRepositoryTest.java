@@ -1,8 +1,11 @@
 package org.example.jvcarsharingservice.repository.rental;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import java.time.LocalDate;
 import org.example.jvcarsharingservice.model.classes.Rental;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +32,15 @@ class RentalRepositoryTest {
         Rental testRental = getRental();
         Rental rental = rentalRepository.findByUserId(userId).orElse(null);
 
-        Assertions.assertAll(
-                () -> Assertions.assertNotNull(rental),
-                () -> Assertions.assertEquals(rental.getUserId(), userId),
-                () -> Assertions.assertEquals(testRental.getRentalDate(), rental.getRentalDate()),
-                () -> Assertions.assertEquals(testRental.getUserId(), rental.getUserId()),
-                () -> Assertions.assertEquals(testRental.getCarId(), rental.getCarId()),
-                () -> Assertions.assertEquals(
+        assertAll(
+                () -> assertNotNull(rental),
+                () -> assertEquals(rental.getUserId(), userId),
+                () -> assertEquals(testRental.getRentalDate(), rental.getRentalDate()),
+                () -> assertEquals(testRental.getUserId(), rental.getUserId()),
+                () -> assertEquals(testRental.getCarId(), rental.getCarId()),
+                () -> assertEquals(
                         testRental.getActualReturnDate(), rental.getActualReturnDate()),
-                () -> Assertions.assertEquals(testRental.getReturnDate(), rental.getReturnDate())
+                () -> assertEquals(testRental.getReturnDate(), rental.getReturnDate())
         );
     }
 

@@ -4,7 +4,7 @@ databaseChangeLog:
       author: bw
       changes:
         - createTable:
-            tableName: payment
+            tableName: payments
             columns:
               - column:
                   name: id

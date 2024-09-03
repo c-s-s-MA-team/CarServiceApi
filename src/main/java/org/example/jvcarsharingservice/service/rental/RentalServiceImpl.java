@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.rental;
+package org.example.jvcarsharingservice.service.rental;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
 import org.example.jvcarsharingservice.repository.rental.provider.RentalSpecificationBuilder;
-import org.example.jvcarsharingservice.servece.notification.NotificationService;
+import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 

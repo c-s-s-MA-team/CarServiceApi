@@ -18,11 +18,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "payments")
 @Getter
 @Setter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE payment SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE payments SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Payment {
 
@@ -38,19 +38,19 @@ public class Payment {
     @Column(nullable = false)
     private PaymentType type;
 
-    @Column(name = "rental_id", nullable = false)
+    @Column(nullable = false)
     private Long rentalId;
 
-    @Column(name = "session_url", nullable = false)
+    @Column(nullable = false)
     private String sessionUrl;
 
-    @Column(name = "session_id", nullable = false)
+    @Column(nullable = false)
     private String sessionId;
 
-    @Column(name = "amount_to_pay", nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amountToPay;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "deleted", nullable = false)
+    private boolean isDeleted = false;
 }
 

@@ -1,5 +1,7 @@
-package org.example.jvcarsharingservice.servece.car;
+package org.example.jvcarsharingservice.service.car;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,7 +19,6 @@ import org.example.jvcarsharingservice.mapper.CarMapper;
 import org.example.jvcarsharingservice.model.classes.Car;
 import org.example.jvcarsharingservice.model.enums.Type;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,8 +64,8 @@ class CarServiceImplTest {
         CarDto result = carService.addCar(carRequestDto);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(carDto, result);
+        assertNotNull(result);
+        assertEquals(carDto, result);
         verify(carMapper, times(1)).toEntity(carRequestDto);
         verify(carRepository, times(1)).save(car);
         verify(carMapper, times(1)).toDto(car);
@@ -90,9 +91,9 @@ class CarServiceImplTest {
         List<CarDto> result = carService.getCars(pageable);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(1, result.size());
-        Assertions.assertEquals(carDto, result.get(0));
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(carDto, result.get(0));
         verify(carRepository, times(1)).findAll(pageable);
         verify(carMapper, times(1)).toDto(car);
         verifyNoMoreInteractions(carRepository, carMapper);
@@ -113,8 +114,8 @@ class CarServiceImplTest {
         CarDetailsDto result = carService.getCarDetails(carId);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(carDetailsDto, result);
+        assertNotNull(result);
+        assertEquals(carDetailsDto, result);
         verify(carRepository, times(1)).findById(carId);
         verify(carMapper, times(1)).toDetailsDto(car);
         verifyNoMoreInteractions(carRepository, carMapper);
@@ -131,7 +132,7 @@ class CarServiceImplTest {
         // When & Then
         EntityNotFoundException entityNotFoundException =
                 assertThrows(EntityNotFoundException.class, () -> carService.getCarDetails(carId));
-        Assertions.assertEquals(
+        assertEquals(
                 "Car not found with id: " + carId, entityNotFoundException.getMessage());
         verify(carRepository, times(1)).findById(carId);
         verifyNoMoreInteractions(carRepository);
@@ -155,8 +156,8 @@ class CarServiceImplTest {
         CarDto result = carService.updateCar(carId, carRequestDto);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(carDto, result);
+        assertNotNull(result);
+        assertEquals(carDto, result);
         verify(carRepository, times(1)).findById(carId);
         verify(carMapper, times(1)).toEntity(carRequestDto);
         verify(carRepository, times(1)).save(car);
@@ -178,7 +179,7 @@ class CarServiceImplTest {
                 assertThrows(EntityNotFoundException.class,
                         () -> carService.updateCar(carId, carRequestDto));
 
-        Assertions.assertEquals(
+        assertEquals(
                 "Car not found with id: " + carId, entityNotFoundException.getMessage());
         verify(carRepository, times(1)).findById(carId);
         verifyNoMoreInteractions(carRepository);

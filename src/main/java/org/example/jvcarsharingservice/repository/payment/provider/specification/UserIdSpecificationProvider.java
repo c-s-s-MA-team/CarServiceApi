@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserIdSpecificationProvider implements SpecificationProvider<Rental> {
 
+    public static final String USERS_ID = "usersId";
+
     @Override
     public String getKey() {
-        return "usersId";
+        return USERS_ID;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class UserIdSpecificationProvider implements SpecificationProvider<Rental
     public Specification<Rental> getSpecification(Long[] params) {
         return (root, query, criteriaBuilder) -> {
             Join<Payment, Rental> rentalJoin = root.join("rental", JoinType.INNER);
-            return rentalJoin.get("userId").in(params);
+            return rentalJoin.get(USERS_ID).in(params);
         };
     }
 

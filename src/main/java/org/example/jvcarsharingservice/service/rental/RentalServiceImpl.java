@@ -17,6 +17,7 @@ import org.example.jvcarsharingservice.repository.rental.provider.RentalSpecific
 import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class RentalServiceImpl implements RentalService {
     private final NotificationService notificationService;
     
     @Override
+    @Transactional
     public RentalDto addRental(
             User user, CreateRentalRequestDto createRentalRequestDto) {
         updateCarInventoryAfterRent(createRentalRequestDto);

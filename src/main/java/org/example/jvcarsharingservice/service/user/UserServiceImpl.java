@@ -12,6 +12,7 @@ import org.example.jvcarsharingservice.model.enums.Role;
 import org.example.jvcarsharingservice.repository.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +33,8 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user));
     }
 
-    private User registerNewUser(RegisterRequestDto requestDto) {
+    @Transactional
+    protected User registerNewUser(RegisterRequestDto requestDto) {
         User user = new User();
         user.setEmail(requestDto.getEmail());
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
@@ -43,6 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateRole(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("user with this id does not exist")
@@ -62,6 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateMyProfile(User user, UpdateUserRequestDto requestDto) {
         user.setFirstName(requestDto.firstName());
         user.setLastName(requestDto.lastName());

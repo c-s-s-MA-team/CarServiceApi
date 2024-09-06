@@ -26,6 +26,7 @@ import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentSpecificationBuilder paymentSpecificationBuilder;
 
     @Override
+    @Transactional
     public PaymentDto createPayment(User user, CreatePaymentRequestDto requestDto) {
         Rental rental = rentalRepository.findById(requestDto.rentalId()).orElseThrow(
                 () -> new EntityNotFoundException(

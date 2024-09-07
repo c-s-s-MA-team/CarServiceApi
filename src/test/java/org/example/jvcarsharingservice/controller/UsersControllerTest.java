@@ -101,6 +101,11 @@ class UsersControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Get the profile of the currently authenticated user successfully")
     void getMyProfile_Success() throws Exception {
         UserDto userDto = getUserDto();

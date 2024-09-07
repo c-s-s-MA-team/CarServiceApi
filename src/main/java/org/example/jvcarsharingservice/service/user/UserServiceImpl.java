@@ -35,12 +35,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     protected User registerNewUser(RegisterRequestDto requestDto) {
-        User user = new User();
-        user.setEmail(requestDto.getEmail());
+        User user = userMapper.toEntity(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRole(ROLE);
-        user.setFirstName(requestDto.getFirstName());
-        user.setLastName(requestDto.getLastName());
         return user;
     }
 

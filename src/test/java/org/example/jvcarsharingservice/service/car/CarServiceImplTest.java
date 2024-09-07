@@ -3,6 +3,7 @@ package org.example.jvcarsharingservice.service.car;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -148,7 +149,7 @@ class CarServiceImplTest {
         CarDto carDto = getCarDto();
 
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
-        when(carMapper.toEntity(carRequestDto)).thenReturn(car);
+        doNothing().when(carMapper).updateDto(carRequestDto, car);
         when(carRepository.save(car)).thenReturn(car);
         when(carMapper.toDto(car)).thenReturn(carDto);
 
@@ -159,7 +160,7 @@ class CarServiceImplTest {
         assertNotNull(result);
         assertEquals(carDto, result);
         verify(carRepository, times(1)).findById(carId);
-        verify(carMapper, times(1)).toEntity(carRequestDto);
+        verify(carMapper, times(1)).updateDto(carRequestDto, car);
         verify(carRepository, times(1)).save(car);
         verify(carMapper, times(1)).toDto(car);
         verifyNoMoreInteractions(carRepository, carMapper);

@@ -18,8 +18,8 @@ import org.example.jvcarsharingservice.dto.car.CarDto;
 import org.example.jvcarsharingservice.dto.car.CarRequestDto;
 import org.example.jvcarsharingservice.model.classes.Car;
 import org.example.jvcarsharingservice.model.enums.Type;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,17 +51,21 @@ class CarsControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    @Autowired
+    private DataSource dataSource;
 
-    @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
+    @BeforeEach
+    void beforeAll() {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(applicationContext)
+                .webAppContextSetup(webApplicationContext)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
-    @AfterAll
-    static void afterAll(@Autowired DataSource dataSource) {
+    @AfterEach
+    void afterAll() {
         teardown(dataSource);
     }
 

@@ -55,14 +55,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         try {
             Session session = createStripeSession(total, rental);
-            Payment paymentEntity = getPayment(Status.PENDING,
+            Payment payment = getPayment(Status.PENDING,
                     PaymentType.PAYMENT,
                     rental,
                     total,
                     session);
 
             return paymentMapper.toDto(
-                    paymentRepository.save(paymentEntity));
+                    paymentRepository.save(payment));
 
         } catch (StripeException e) {
             throw new PaymentException("cannot create payment", e);

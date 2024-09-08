@@ -209,6 +209,54 @@ class CarsControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    @WithMockUser(username = "MANAGER", authorities = {"MANAGER"})
+    @DisplayName("Test adding a car with invalid data - MANAGER only")
+    void addCar_InvalidData() throws Exception {
+        CarRequestDto carRequestDto =
+                new CarRequestDto(null, null, null, -1, BigDecimal.ZERO); // Invalid data
+
+        String jsonRequest = objectMapper.writeValueAsString(carRequestDto);
+
+        mockMvc.perform(
+                        post("/cars")
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"MANAGER"})
+    @DisplayName("Test retrieving details of a non-existent car")
+    void getCarDetails_NonExistentCar() throws Exception {
+        Long nonExistentId = 999L;
+
+        mockMvc.perform(
+                        get("/cars/" + nonExistentId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"MANAGER"})
+    @DisplayName("Test updating a car with invalid data - MANAGER only")
+    void updateCar_InvalidData() throws Exception {
+        Long id = ID;
+        CarRequestDto carRequestDto =
+                new CarRequestDto(null, null, null, -1, BigDecimal.ZERO); // Invalid data
+
+        String jsonRequest = objectMapper.writeValueAsString(carRequestDto);
+
+        mockMvc.perform(
+                        put("/cars/" + id)
+                                .content(jsonRequest)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isBadRequest());
+    }
+
     private CarRequestDto getCarRequestDto() {
         return new CarRequestDto(
                 MODEL, BRAND, UNIVERSAL, INVENTORY, DAILY_FEE

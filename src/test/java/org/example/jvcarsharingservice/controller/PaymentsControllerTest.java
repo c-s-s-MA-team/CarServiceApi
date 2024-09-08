@@ -131,6 +131,57 @@ class PaymentsControllerTest {
         EqualsBuilder.reflectionEquals(paymentDto, actual, "id");
     }
 
+    @Test
+    @WithMockUser(username = "user", authorities = {"MANAGER"})
+    @DisplayName("Test for invalid search parameters")
+    @SneakyThrows
+    void getPayments_InvalidSearchParameters() {
+        PaymentSearchParameters invalidSearchParameters =
+                new PaymentSearchParameters(null);
+
+        String json = objectMapper.writeValueAsString(invalidSearchParameters);
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/payments")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "user", authorities = {"USER"})
+    @DisplayName("Test for unauthorized access to create payment session")
+    @SneakyThrows
+    void createPaymentSession_Unauthorized() {
+        CreatePaymentRequestDto createPaymentRequestDto = getCreatePaymentRequestDto();
+        String json = objectMapper.writeValueAsString(createPaymentRequestDto);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/payments")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "user", authorities = {"MANAGER"})
+    @DisplayName("Test for retrieving non-existent payments")
+    @SneakyThrows
+    void getPayments_NonExistentResource() {
+        PaymentSearchParameters paymentSearchParameters =
+                new PaymentSearchParameters(new String[]{"9999"}); // Non-existent user ID
+
+        String json = objectMapper.writeValueAsString(paymentSearchParameters);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/payments")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
     private PaymentDto getPaymentDto() {
         PaymentDto paymentDto = new PaymentDto();
         paymentDto.setId(ID);

@@ -190,6 +190,32 @@ class RentalsControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username = "user", authorities = {"MANAGER"})
+    @DisplayName("Test getting specific rental with invalid ID")
+    void getRental_InvalidId() throws Exception {
+        Long invalidId = 999L;
+
+        mockMvc.perform(
+                        get("/rentals/" + invalidId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("Test returning a rental with invalid ID")
+    void returnRental_InvalidId() throws Exception {
+        long invalidId = 999L;
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/rentals/" + invalidId + "/return")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
     private User getUser() {
         User user = new User();
         user.setId(ID);

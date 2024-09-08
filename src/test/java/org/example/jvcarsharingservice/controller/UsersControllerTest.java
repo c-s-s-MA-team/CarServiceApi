@@ -149,6 +149,43 @@ class UsersControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username = "user", authorities = {"USER"})
+    @DisplayName("Test updating user role without MANAGER authority")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateUserRole_Fail_Unauthorized() throws Exception {
+        Long id = ID;
+
+        mockMvc.perform(
+                        put("/users/" + id + "/role")
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("Test updating own profile with invalid data")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateMyProfile_Fail_InvalidData() throws Exception {
+        UpdateUserRequestDto invalidRequestDto = new UpdateUserRequestDto("", "");
+
+        String json = objectMapper.writeValueAsString(invalidRequestDto);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put("/users/me")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isBadRequest());
+    }
+
     private User getUser() {
         User user = new User();
         user.setId(ID);

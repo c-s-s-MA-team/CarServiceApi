@@ -164,7 +164,13 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentDto> getPayments(PaymentSearchParameters searchParameters) {
         Specification<Payment> build = paymentSpecificationBuilder.build(searchParameters);
-        return paymentRepository.findAll(build).stream()
+        List<Payment> all = paymentRepository.findAll(build);
+
+        if (all.isEmpty()) {
+            throw new EntityNotFoundException("No payments found for the given search parameters");
+        }
+
+        return all.stream()
                 .map(paymentMapper::toDto)
                 .toList();
     }

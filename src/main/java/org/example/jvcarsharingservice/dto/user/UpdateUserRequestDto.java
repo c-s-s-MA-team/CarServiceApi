@@ -1,11 +1,11 @@
 package org.example.jvcarsharingservice.dto.user;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record UpdateUserRequestDto(
-        @NotNull
+        @NotBlank
         String firstName,
-        @NotNull
+        @NotBlank
         String lastName
 ) {
 }

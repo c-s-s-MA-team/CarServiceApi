@@ -11,8 +11,8 @@ import org.example.jvcarsharingservice.dto.user.UpdateUserRequestDto;
 import org.example.jvcarsharingservice.dto.user.UserDto;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.model.enums.Role;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,17 +43,21 @@ class UsersControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    @Autowired
+    private DataSource dataSource;
 
-    @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
+    @BeforeEach
+    void beforeAll() {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(applicationContext)
+                .webAppContextSetup(webApplicationContext)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
-    @AfterAll
-    static void afterAll(@Autowired DataSource dataSource) {
+    @AfterEach
+    void afterAll() {
         teardown(dataSource);
     }
 
@@ -97,6 +101,11 @@ class UsersControllerTest {
 
     @Test
     @WithUserDetails(value = "admin@admin.com")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Get the profile of the currently authenticated user successfully")
     void getMyProfile_Success() throws Exception {
         UserDto userDto = getUserDto();
@@ -138,6 +147,43 @@ class UsersControllerTest {
 
         EqualsBuilder.reflectionEquals(userDto, actual, "id");
 
+    }
+
+    @Test
+    @WithMockUser(username = "user", authorities = {"USER"})
+    @DisplayName("Test updating user role without MANAGER authority")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateUserRole_Fail_Unauthorized() throws Exception {
+        Long id = ID;
+
+        mockMvc.perform(
+                        put("/users/" + id + "/role")
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("Test updating own profile with invalid data")
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql",
+            "classpath:db/controller/add-to-users.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:db/controller/delete-from-users.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void updateMyProfile_Fail_InvalidData() throws Exception {
+        UpdateUserRequestDto invalidRequestDto = new UpdateUserRequestDto("", "");
+
+        String json = objectMapper.writeValueAsString(invalidRequestDto);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put("/users/me")
+                                .content(json)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isBadRequest());
     }
 
     private User getUser() {

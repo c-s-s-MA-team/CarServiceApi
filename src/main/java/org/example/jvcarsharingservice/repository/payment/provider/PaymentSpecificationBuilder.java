@@ -3,10 +3,9 @@ package org.example.jvcarsharingservice.repository.payment.provider;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.payment.PaymentSearchParameters;
-import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Payment;
-import org.example.jvcarsharingservice.repository.SpecificationBuilder;
 import org.example.jvcarsharingservice.repository.SpecificationProviderManager;
+import org.example.jvcarsharingservice.repository.payment.SpecificationBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +28,5 @@ public class PaymentSpecificationBuilder implements SpecificationBuilder<Payment
                             .getSpecification(usersIds));
         }
         return spec;
-    }
-
-    @Override
-    public Specification<Payment> build(RentalSearchParameters searchParameters) {
-        return null;
     }
 }

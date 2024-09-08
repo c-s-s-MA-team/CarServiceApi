@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.payment;
+package org.example.jvcarsharingservice.service.payment;
 
 import java.util.List;
 import org.example.jvcarsharingservice.dto.payment.CreatePaymentRequestDto;

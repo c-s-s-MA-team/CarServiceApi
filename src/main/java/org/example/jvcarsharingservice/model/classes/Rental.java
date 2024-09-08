@@ -14,11 +14,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "rental")
+@Table(name = "rentals")
 @Getter
 @Setter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE rental SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE rentals SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Rental {
 
@@ -26,21 +26,20 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "rental_date", nullable = false)
+    @Column(nullable = false)
     private LocalDate rentalDate;
 
-    @Column(name = "return_date", nullable = false)
+    @Column(nullable = false)
     private LocalDate returnDate;
 
-    @Column(name = "actual_return_date")
     private LocalDate actualReturnDate;
 
-    @Column(name = "car_id", nullable = false)
+    @Column(nullable = false)
     private Long carId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "deleted", nullable = false)
+    private boolean isDeleted = false;
 }

@@ -1,5 +1,8 @@
-package org.example.jvcarsharingservice.servece.user;
+package org.example.jvcarsharingservice.service.user;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +17,6 @@ import org.example.jvcarsharingservice.mapper.UserMapper;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.model.enums.Role;
 import org.example.jvcarsharingservice.repository.user.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +58,8 @@ class UserServiceImplTest {
         UserDto result = userService.updateRole(userId);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(userDto, result);
+        assertNotNull(result);
+        assertEquals(userDto, result);
         verify(userRepository, times(1)).findById(userId);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toDto(user);
@@ -73,9 +75,9 @@ class UserServiceImplTest {
 
         // When & Then
         EntityNotFoundException entityNotFoundException =
-                Assertions.assertThrows(
+                assertThrows(
                         EntityNotFoundException.class, () -> userService.updateRole(anyLong()));
-        Assertions.assertEquals("user with this id does not exist",
+        assertEquals("user with this id does not exist",
                 entityNotFoundException.getMessage());
         verify(userRepository, times(1)).findById(anyLong());
         verifyNoMoreInteractions(userRepository);
@@ -94,8 +96,8 @@ class UserServiceImplTest {
         UserDto result = userService.getMyProfile(user);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(userDto, result);
+        assertNotNull(result);
+        assertEquals(userDto, result);
         verify(userMapper, times(1)).toDto(user);
         verifyNoMoreInteractions(userMapper);
     }
@@ -115,8 +117,8 @@ class UserServiceImplTest {
         UserDto result = userService.updateMyProfile(user, requestDto);
 
         // Then
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(userDto, result);
+        assertNotNull(result);
+        assertEquals(userDto, result);
         verify(userRepository, times(1)).save(user);
         verify(userMapper, times(1)).toDto(user);
         verifyNoMoreInteractions(userRepository, userMapper);

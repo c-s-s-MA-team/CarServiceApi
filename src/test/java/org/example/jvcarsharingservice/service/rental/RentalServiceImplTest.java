@@ -1,5 +1,7 @@
-package org.example.jvcarsharingservice.servece.rental;
+package org.example.jvcarsharingservice.service.rental;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.times;
@@ -21,8 +23,7 @@ import org.example.jvcarsharingservice.model.enums.Role;
 import org.example.jvcarsharingservice.model.enums.Type;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.example.jvcarsharingservice.repository.rental.RentalRepository;
-import org.example.jvcarsharingservice.servece.notification.NotificationService;
-import org.junit.Assert;
+import org.example.jvcarsharingservice.service.notification.NotificationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,8 +83,8 @@ class RentalServiceImplTest {
         RentalDto result = rentalService.addRental(user, requestDto);
 
         // Then
-        Assert.assertNotNull(result);
-        Assert.assertEquals(rentalDto, result);
+        assertNotNull(result);
+        assertEquals(rentalDto, result);
         verify(carRepository, times(1)).findById(car.getId());
         verify(rentalRepository, times(1)).save(rental);
         verify(rentalMapper, times(1)).toEntity(requestDto);
@@ -108,8 +109,8 @@ class RentalServiceImplTest {
         RentalDto result = rentalService.getRental(rentalId);
 
         // Then
-        Assert.assertNotNull(result);
-        Assert.assertEquals(rentalDto, result);
+        assertNotNull(result);
+        assertEquals(rentalDto, result);
         verify(rentalRepository, times(1)).findById(rentalId);
         verify(rentalMapper, times(1)).toDto(rental);
         verifyNoMoreInteractions(rentalRepository, rentalMapper);

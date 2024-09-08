@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.notification;
+package org.example.jvcarsharingservice.service.notification;
 
 import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.telegram.NotificationBot;

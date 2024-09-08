@@ -8,7 +8,7 @@ import org.example.jvcarsharingservice.dto.user.login.LoginRequestDto;
 import org.example.jvcarsharingservice.dto.user.login.LoginResponseDto;
 import org.example.jvcarsharingservice.dto.user.registration.RegisterRequestDto;
 import org.example.jvcarsharingservice.security.jwt.AuthService;
-import org.example.jvcarsharingservice.servece.user.UserService;
+import org.example.jvcarsharingservice.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

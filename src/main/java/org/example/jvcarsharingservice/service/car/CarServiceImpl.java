@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.car;
+package org.example.jvcarsharingservice.service.car;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -13,6 +13,7 @@ import org.example.jvcarsharingservice.model.enums.Type;
 import org.example.jvcarsharingservice.repository.car.CarRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
 
     @Override
+    @Transactional
     public CarDto addCar(CarRequestDto createCarRequestDto) {
         Car car = carMapper.toEntity(createCarRequestDto);
         setTypeForCar(createCarRequestDto, car);
@@ -43,13 +45,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @Transactional
     public CarDto updateCar(Long id, @Valid CarRequestDto updateCarRequestDto) {
-        if (!carRepository.findById(id).isPresent()) {
-            throw new EntityNotFoundException("Car not found with id: " + id);
-        }
-        Car car = carMapper.toEntity(updateCarRequestDto);
-        car.setId(id);
+        Car car = carRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Car not found with id: " + id
+                )
+        );
+        carMapper.updateDto(updateCarRequestDto, car);
+
         setTypeForCar(updateCarRequestDto, car);
+
         return carMapper.toDto(carRepository.save(car));
 
     }

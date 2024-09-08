@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserIdRentalSpecificationProvider implements SpecificationProvider<Rental> {
 
+    public static final String USER_ID = "userId";
+
     @Override
     public String getKey() {
-        return "userId";
+        return USER_ID;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class UserIdRentalSpecificationProvider implements SpecificationProvider<
 
     public Specification<Rental> getSpecification(Long[] params) {
         return (root, query, criteriaBuilder) -> root
-                .get("userId")
+                .get(USER_ID)
                 .in(Arrays.stream(params).toArray());
     }
 

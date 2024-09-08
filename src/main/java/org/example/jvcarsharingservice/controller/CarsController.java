@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.jvcarsharingservice.dto.car.CarDetailsDto;
 import org.example.jvcarsharingservice.dto.car.CarDto;
 import org.example.jvcarsharingservice.dto.car.CarRequestDto;
-import org.example.jvcarsharingservice.servece.car.CarService;
+import org.example.jvcarsharingservice.service.car.CarService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;

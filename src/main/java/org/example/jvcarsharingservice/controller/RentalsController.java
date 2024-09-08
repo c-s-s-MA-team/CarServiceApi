@@ -8,7 +8,7 @@ import org.example.jvcarsharingservice.dto.rental.CreateRentalRequestDto;
 import org.example.jvcarsharingservice.dto.rental.RentalDto;
 import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.User;
-import org.example.jvcarsharingservice.servece.rental.RentalService;
+import org.example.jvcarsharingservice.service.rental.RentalService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

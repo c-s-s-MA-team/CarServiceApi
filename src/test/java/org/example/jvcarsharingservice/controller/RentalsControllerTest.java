@@ -16,8 +16,8 @@ import org.example.jvcarsharingservice.dto.rental.RentalSearchParameters;
 import org.example.jvcarsharingservice.model.classes.Rental;
 import org.example.jvcarsharingservice.model.classes.User;
 import org.example.jvcarsharingservice.model.enums.Role;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,17 +53,21 @@ class RentalsControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    @Autowired
+    private DataSource dataSource;
 
-    @BeforeAll
-    static void beforeAll(@Autowired WebApplicationContext applicationContext) {
+    @BeforeEach
+    void beforeAll() {
         mockMvc = MockMvcBuilders
-                .webAppContextSetup(applicationContext)
+                .webAppContextSetup(webApplicationContext)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
-    @AfterAll
-    static void afterAll(@Autowired DataSource dataSource) {
+    @AfterEach
+    void afterAll() {
         teardown(dataSource);
     }
 
@@ -184,6 +188,32 @@ class RentalsControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+    }
+
+    @Test
+    @WithMockUser(username = "user", authorities = {"MANAGER"})
+    @DisplayName("Test getting specific rental with invalid ID")
+    void getRental_InvalidId() throws Exception {
+        Long invalidId = 999L;
+
+        mockMvc.perform(
+                        get("/rentals/" + invalidId)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithUserDetails(value = "admin@admin.com")
+    @DisplayName("Test returning a rental with invalid ID")
+    void returnRental_InvalidId() throws Exception {
+        long invalidId = 999L;
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/rentals/" + invalidId + "/return")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
     }
 
     private User getUser() {

@@ -1,1 +1,1 @@
-DELETE FROM rental WHERE id = 1;
+DELETE FROM rentals WHERE id = 1;

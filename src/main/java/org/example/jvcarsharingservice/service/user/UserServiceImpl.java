@@ -1,4 +1,4 @@
-package org.example.jvcarsharingservice.servece.user;
+package org.example.jvcarsharingservice.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.example.jvcarsharingservice.model.enums.Role;
 import org.example.jvcarsharingservice.repository.user.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,17 +33,16 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(user));
     }
 
-    private User registerNewUser(RegisterRequestDto requestDto) {
-        User user = new User();
-        user.setEmail(requestDto.getEmail());
+    @Transactional
+    protected User registerNewUser(RegisterRequestDto requestDto) {
+        User user = userMapper.toEntity(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setRole(ROLE);
-        user.setFirstName(requestDto.getFirstName());
-        user.setLastName(requestDto.getLastName());
         return user;
     }
 
     @Override
+    @Transactional
     public UserDto updateRole(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("user with this id does not exist")
@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto updateMyProfile(User user, UpdateUserRequestDto requestDto) {
         user.setFirstName(requestDto.firstName());
         user.setLastName(requestDto.lastName());

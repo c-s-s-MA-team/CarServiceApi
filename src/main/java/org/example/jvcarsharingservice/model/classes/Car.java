@@ -17,11 +17,11 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "car")
+@Table(name = "cars")
 @Getter
 @Setter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE car SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE cars SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class Car {
 
@@ -42,9 +42,9 @@ public class Car {
     @Column(nullable = false)
     private int inventory;
 
-    @Column(name = "daily_fee", nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal dailyFee;
 
-    @Column(nullable = false)
-    private boolean deleted = false;
+    @Column(name = "deleted", nullable = false)
+    private boolean isDeleted = false;
 }

@@ -1,2 +1,2 @@
-INSERT INTO car (id, model, brand, type, inventory, daily_fee, deleted)
+INSERT INTO cars (id, model, brand, type, inventory, daily_fee, deleted)
 VALUES (1, 'model', 'brand', 'UNIVERSAL', 10, 10, false);

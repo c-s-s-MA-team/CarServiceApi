@@ -3,6 +3,10 @@
 
 The **JV Car Sharing Service API** is a backend application that provides an API for managing car rentals, users, payments, and authentication in a car-sharing service. This project is designed to make car-sharing services easy to manage by offering set of API interfaces that support CRUD (Create, Read, Update, Delete) operations and secure authentication.
 
+## Video
+You can wach how work my API
+[Watch it on YouTube](https://www.youtube.com/watch?v=TABxLtpBEq0)
+
 ## Technologies and Tools
 
 This project utilizes a range of modern technologies and tools to create a secure, efficient, and scalable API:
@@ -71,10 +75,6 @@ The controllers in this application are designed with usability and security in 
 
 ![Architecture Diagram](entities.png)
 
-
-## Video
-You can wach how work my API
-[Watch it on YouTube](https://www.youtube.com/watch?v=TABxLtpBEq0)
 
 ### 1. Car
 - **Model:** String

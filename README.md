@@ -127,7 +127,8 @@ The controllers in this application are designed with usability and security in 
  **Start Docker**: Make sure Docker is up and running before you proceed with the setup.
 
 ### After starting the application, the API documentation will be available at:
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui.html - when you run app from intelij IDEA
+http://localhost:8081/swagger-ui.html - when you run app from docker
 
 ## Login Credentials For Default Users
 
